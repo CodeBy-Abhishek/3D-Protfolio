@@ -1,0 +1,204 @@
+@import "tailwindcss";
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
+}
+
+@theme {
+  --color-zinc-950: #09090b;
+  --color-cyan-500: #06b6d4;
+  --color-zinc-100: #f4f4f5;
+  --color-cyan-900: #164e63;
+  --color-cyan-100: #cffafe;
+}
+
+/* Custom Utilities layer is handled differently in v4 but standard CSS works */
+@layer components {
+  .glass-panel {
+    background-color: rgb(24 24 27 / 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+  }
+
+  .cyber-gradient-text {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(135deg,
+        #22d3ee 0%,
+        #3b82f6 50%,
+        #22d3ee 100%);
+    background-size: 200% auto;
+    animation: flow 1s linear infinite;
+  }
+
+  @keyframes flow {
+    to {
+      background-position: 200% center;
+    }
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(34, 211, 238, 0.2);
+  }
+
+  .dot-grid {
+    background-image: radial-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .btn-primary {
+    @apply bg-cyan-500 text-black font-bold tracking-[0.2em] transition-all duration-500;
+  }
+
+  .btn-primary:hover {
+    @apply bg-cyan-400 scale-[1.01] rounded-3xl;
+    box-shadow: 0 0 40px rgba(6, 182, 212, 0.3);
+  }
+
+  .btn-secondary {
+    @apply border border-white/10 bg-white/5 backdrop-blur-sm text-zinc-400 font-bold tracking-widest transition-all duration-300;
+  }
+
+  .btn-secondary:hover {
+    @apply border-white/20 bg-white/10 text-white scale-[1.02];
+  }
+
+  .nav-link {
+    font-size: 0.875rem;
+    /* text-sm */
+    font-weight: 500;
+    color: #a1a1aa;
+    /* zinc-400 */
+    transition-property: color;
+    transition-duration: 150ms;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    /* tracking-widest */
+  }
+
+  .nav-link:hover {
+    color: #22d3ee;
+    /* cyan-400 */
+  }
+
+  .scan-line {
+    width: 100%;
+    height: 100px;
+    z-index: 1;
+    background: linear-gradient(to bottom, transparent, rgba(6, 182, 212, 0.05), transparent);
+    position: absolute;
+    top: -100px;
+    left: 0;
+    pointer-events: none;
+    animation: scan 10s linear infinite;
+  }
+
+  @keyframes scan {
+    0% {
+      top: -100px;
+    }
+
+    100% {
+      top: 100%;
+    }
+  }
+
+  .corner-bracket {
+    @apply absolute w-4 h-4 border-cyan-500/20 pointer-events-none;
+  }
+
+  .corner-tl {
+    @apply top-10 left-10 border-t-2 border-l-2;
+  }
+
+  .corner-tr {
+    @apply top-10 right-10 border-t-2 border-r-2;
+  }
+
+  .corner-bl {
+    @apply bottom-10 left-10 border-b-2 border-l-2;
+  }
+
+  .corner-br {
+    @apply bottom-10 right-10 border-b-2 border-r-2;
+  }
+
+  .data-annotation {
+    @apply hidden lg:block absolute font-mono text-[9px] text-zinc-600 uppercase tracking-widest;
+  }
+
+  .mouse-scroll {
+    @apply w-5 h-8 border-2 border-white/20 rounded-full relative;
+  }
+
+  .mouse-scroll::after {
+    content: '';
+    @apply absolute left-1/2 -translate-x-1/2 w-1 h-2 bg-cyan-500 rounded-full;
+    top: 6px;
+    animation: scroll-ping 2s infinite;
+  }
+
+  @keyframes scroll-ping {
+    0% {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    100% {
+      transform: translate(-50%, 12px);
+      opacity: 0;
+    }
+  }
+}
+
+body {
+  background-color: #050507;
+  color: #a1a1aa;
+  /* zinc-400 */
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  position: relative;
+}
+
+/* Professional Noise Texture Overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.02;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.section-divider {
+  @apply w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent;
+}
+
+/* Custom Scrollbar for a more professional feel */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #18181b;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #27272a;
+}

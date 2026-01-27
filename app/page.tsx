@@ -243,7 +243,7 @@ export default function Home() {
 
 
               <a
-                href="/ABHISHEKRESUME.pdf"
+                href="/Abhishek Yadav Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-secondary px-7 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest"

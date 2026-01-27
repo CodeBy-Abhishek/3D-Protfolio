@@ -5,16 +5,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function SystemBoot({ onComplete }: { onComplete: () => void }) {
     const [logs, setLogs] = useState<string[]>([]);
     const bootLogs = [
-        "INITIALIZING_KERNEL_0x8F2...",
-        "MOUNTING_DISTRIBUTED_SHARDS...",
-        "ESTABLISHING_GRPC_HANDSHAKE...",
-        "LOADING_NEURAL_WEIGHTS...",
-        "DECRYPTING_RESUME_METRICS...",
-        "SYSTEM_STABILITY: 99.999% [CONFIRMED]",
-        "INTERFACE_READY // WELCOME_USER",
+        "INITIALIZING_RUNTIME_ENVIRONMENT...",
+        "LOADING_APPLICATION_MODULES...",
+        "HYDRATING_STATE_MANAGER...",
+        "PREPARING_ASSETS...",
+        "VERIFYING_INTEGRITY...",
+        "SYSTEM_READY [OK]",
+        "WELCOME_USER",
     ];
 
+    const [randomId, setRandomId] = useState("");
+
     useEffect(() => {
+        setRandomId(Math.random().toString(16).substr(2, 6).toUpperCase());
         let currentLog = 0;
         const interval = setInterval(() => {
             if (currentLog < bootLogs.length) {
@@ -37,7 +40,7 @@ export default function SystemBoot({ onComplete }: { onComplete: () => void }) {
             <div className="w-full max-w-sm space-y-2 font-mono text-[10px]">
                 <div className="flex justify-between text-zinc-600 mb-8">
                     <span>BOOT_SEQUENCE_v4.0.1</span>
-                    <span>0x{Math.random().toString(16).substr(2, 6).toUpperCase()}</span>
+                    <span>0x{randomId || '000000'}</span>
                 </div>
 
                 <AnimatePresence mode="popLayout">

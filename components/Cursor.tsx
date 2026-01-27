@@ -60,19 +60,7 @@ export default function Cursor() {
                     )}
                 </AnimatePresence>
 
-                {/* Subdued Lock-on Text */}
-                <AnimatePresence>
-                    {isHovered && (
-                        <motion.span
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 25 }}
-                            exit={{ opacity: 0, x: 20 }}
-                            className="absolute left-full ml-4 text-[7px] font-mono text-cyan-500/70 whitespace-nowrap tracking-[0.4em] uppercase"
-                        >
-                            Node::Interacted
-                        </motion.span>
-                    )}
-                </AnimatePresence>
+
             </motion.div>
         </div>
     );

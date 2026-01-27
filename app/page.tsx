@@ -7,9 +7,10 @@ import LiveDiagnostics from '@/components/LiveDiagnostics';
 import ProjectDetails from '@/components/ProjectDetails';
 import SystemBoot from '@/components/SystemBoot';
 import TiltCard from '@/components/TiltCard';
+import ThemeToggle from '@/components/ThemeToggle';
 import { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, ArrowUpRight, Terminal, Server, Cpu, Database, Shield, Zap, Activity, Layers, TerminalSquare, MessageSquare, Info } from 'lucide-react';
-import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
+import { Github, Linkedin, Mail, ArrowUpRight, Terminal, Server, Cpu, Database, Shield, Zap, Activity, Layers, TerminalSquare, MessageSquare, Info, X } from 'lucide-react';
+import { AnimatePresence, motion, useScroll, useSpring, useTransform } from 'framer-motion';
 
 const PROJECTS = [
   {
@@ -24,7 +25,7 @@ const PROJECTS = [
       'Scaled to 150k TPS (Transactions Per Second)',
       'Atomic task execution with idempotent retries'
     ],
-    tech: ['Go', 'Kafka', 'Redis', 'gRPC', 'Protobuf', 'Kubernetes', 'Prometheus'],
+    tech: [ 'JavaScript','Go', 'Kafka', 'Redis', 'gRPC', 'Protobuf', 'Kubernetes', 'Prometheus'],
     details: [
       { title: 'Dynamic Priority Scaling', content: 'Implemented a PID-controller based scaling logic for worker pools that responds to queue depth and latency spikes in real-time.' },
       { title: 'Zero-Loss Ingress', content: 'Utilized Kafka consumer groups with manual offset management to ensure no transaction is lost during network partitions.' },
@@ -55,84 +56,159 @@ const PROJECTS = [
 export default function Home() {
   const [selectedProject, setSelectedProject] = useState<typeof PROJECTS[0] | null>(null);
   const [isBooting, setIsBooting] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // High-Performance Mouse Tracking for 3D Interaction
+  const mouseX = useSpring(0, { stiffness: 50, damping: 20 });
+  const mouseY = useSpring(0, { stiffness: 50, damping: 20 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 40; // Max rotation 20deg
+      const y = (e.clientY / window.innerHeight - 0.5) * -40;
+      mouseX.set(x);
+      mouseY.set(y);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
 
   return (
     <>
       <AnimatePresence>
         {isBooting && <SystemBoot onComplete={() => setIsBooting(false)} />}
       </AnimatePresence>
-      <main className="min-h-screen relative bg-zinc-950 text-zinc-100 overflow-x-hidden selection:bg-cyan-900 selection:text-cyan-100">
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-[55] bg-zinc-950/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 md:hidden"
+          >
+            {['Strategy', 'Stack', 'Engineering', 'Architecture'].map((item) => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-2xl font-bold tracking-tighter text-white hover:text-cyan-400 transition-colors"
+                style={{ fontFamily: 'var(--font-mono)' }}
+              >
+                {item}
+              </a>
+            ))}
+            <a
+              href="#contact"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="mt-8 px-8 py-3 bg-cyan-500 text-black font-bold tracking-widest uppercase rounded-lg hover:bg-cyan-400 transition-colors"
+            >
+              Get in Touch
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <main className="min-h-screen relative bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 overflow-x-hidden selection:bg-cyan-200 dark:selection:bg-cyan-900 selection:text-cyan-900 dark:selection:text-cyan-100 transition-colors duration-500">
+        {/* PERSISTENT 3D BACKGROUND LAYER */}
+        <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden" style={{ perspective: "1200px" }}>
+          <motion.div
+            style={{
+              x: useSpring(useTransform(useScroll().scrollYProgress, [0, 0.5], ["0%", "20%"]), { stiffness: 50, damping: 20 }),
+              y: useSpring(useTransform(useScroll().scrollYProgress, [0, 0.5], ["0%", "10%"]), { stiffness: 50, damping: 20 }),
+              rotateX: mouseY,
+              rotateY: mouseX,
+              scale: useTransform(useScroll().scrollYProgress, [0, 0.5], [1, 0.8]),
+              opacity: useTransform(useScroll().scrollYProgress, [0, 0.8, 1], [0.8, 0.4, 0]),
+              transformStyle: "preserve-3d"
+            }}
+            className="absolute right-0 top-0 w-full lg:w-1/2 h-full flex items-center justify-center"
+          >
+            <div className="w-full h-[90vh] grayscale-[0.1] hover:grayscale-0 transition-all duration-1000" style={{ transform: "translateZ(50px)" }}>
+              <Hero3D />
+            </div>
+          </motion.div>
+        </div>
 
         {/* NAVIGATION - Floating Pill Design */}
         <nav className="fixed w-full top-0 z-[60] px-6 md:px-12 py-6 pointer-events-none">
-          <div className="max-w-[1400px] mx-auto flex justify-between items-center backdrop-blur-xl border border-white/5 rounded-2xl bg-zinc-950/50 p-4 pointer-events-auto">
-            <div className="font-mono text-xl font-bold tracking-tighter cursor-pointer hover:opacity-80 transition-opacity">
-              AY<span className="text-cyan-500">.</span>
-            </div>
+          <div className="max-w-[1400px] mx-auto flex justify-between items-center backdrop-blur-xl border border-zinc-200 dark:border-white/5 rounded-2xl bg-white/50 dark:bg-zinc-950/50 p-4 pointer-events-auto shadow-lg dark:shadow-none">
+            <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="font-mono text-xl font-bold tracking-tighter cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1 group">
+              <span className="text-zinc-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">DEV</span><span className="text-cyan-500 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">. AI</span>
+            </a>
 
             <div className="hidden md:flex gap-10 items-center">
-              {['Strategy', 'Stack', 'Engineering', 'Architecture'].map((item) => (
+              {['About', 'Stack', 'Projects', 'Engineering', 'Architecture'].map((item) => (
                 <a
                   key={item}
                   href={`#${item.toLowerCase()}`}
-                  className="nav-link text-[10px] font-bold tracking-widest text-zinc-500 hover:text-cyan-400 transition-all uppercase"
+                  className="nav-link text-[10px] font-bold tracking-widest text-zinc-600 dark:text-zinc-500 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all uppercase"
                 >
                   {item}
                 </a>
               ))}
-              <div className="h-4 w-px bg-white/10 mx-2"></div>
-              <a href="#contact" className="px-4 py-2 border border-cyan-500/30 rounded-lg bg-cyan-500/5 hover:bg-cyan-500/20 transition-all text-[10px] font-mono text-cyan-400 font-bold tracking-widest">
-                EXECUTE_CONNECT
+              <div className="h-4 w-px bg-zinc-300 dark:bg-white/10 mx-2"></div>
+              <ThemeToggle />
+              <a href="#contact" className="px-4 py-2 border border-cyan-500/30 rounded-lg bg-cyan-500/5 hover:bg-cyan-500/20 transition-all text-[10px] font-mono text-cyan-600 dark:text-cyan-400 font-bold tracking-widest uppercase">
+                Connect
               </a>
             </div>
 
-            <div className="md:hidden">
-              <button className="text-zinc-400"><Layers size={20} /></button>
+            <div className="md:hidden flex items-center gap-4">
+              <ThemeToggle />
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="text-zinc-800 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors p-2"
+              >
+                {isMobileMenuOpen ? <X size={24} /> : <Layers size={24} />}
+              </button>
             </div>
           </div>
         </nav>
 
         {/* HERO SECTION - Refined Side-by-Side Split */}
-        <section className="relative h-screen grid lg:grid-cols-[45%_55%] items-center px-6 md:px-12 lg:px-24 overflow-hidden bg-[#050507]">
+        <section className="relative h-screen grid lg:grid-cols-[45%_55%] items-center px-6 md:px-12 lg:px-24 overflow-hidden bg-zinc-50/50 dark:bg-[#050507] transition-colors duration-500">
           {/* Text Content - Focused Left Column */}
           <div className="z-30 flex flex-col justify-center min-h-[60vh] relative pr-0 lg:pr-12">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex items-center gap-3 text-cyan-500/60 text-[10px] font-bold tracking-[0.5em] uppercase mb-8"
+              className="flex items-center gap-3 text-cyan-600 dark:text-cyan-500/60 text-[20px] font-bold tracking-[0.5em] uppercase mb-8"
             >
-              <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse"></div>
-              Systems_Engineer // L5_INFRA
+              <div className="w-1.5 h-1.5 rounded-full bg-cyan-600 dark:bg-cyan-500 shadow-[0_0_10px_rgba(34,211,238,0.8)] animate-pulse"></div>
+              Developer Portfolio<span className="text-zinc-400 dark:text-zinc-600 px-1"></span>
             </motion.div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <motion.h1
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2, duration: 0.8 }}
-                className="text-7xl md:text-[8.5rem] font-bold tracking-tighter leading-[0.85] text-white flex flex-col"
+                className="font-bold tracking-tighter leading-[0.9] text-zinc-900 dark:text-white flex flex-col"
               >
-                <span>Abhishek</span>
-                <motion.span className="cyber-gradient-text font-black -mt-2">
-                  Yadav
+                <span className="text-7xl md:text-[6.0rem] text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 via-zinc-600 to-zinc-400 dark:from-white dark:via-zinc-400 dark:to-zinc-600">Hi, I'm </span>
+                <motion.span className="text-6xl md:text-[5.5rem] font-black -mt-2 cyber-gradient-text leading-[0.85]">
+                 Abhishek
                 </motion.span>
               </motion.h1>
+              <span className="text-5xl md:text-[1.5rem] text-transparent bg-clip-text bg-gradient-to-r from-zinc-800 via-zinc-600 to-zinc-400 dark:from-white dark:via-zinc-400 dark:to-zinc-600">Full Stack Developer | AI/ML </span>
 
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="w-24 h-1 bg-cyan-500/20 mb-8 mt-4"
+                className="w-24 h-1 bg-cyan-500/20 mb-4 mt-4"
               ></motion.div>
 
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="text-lg md:text-2xl text-zinc-500 max-w-lg leading-relaxed font-light"
+                className="text-lg md:text-2xl text-zinc-600 dark:text-zinc-500 max-w-lg leading-relaxed font-light"
               >
-                Designing <span className="text-zinc-200 font-medium italic">high-throughput distributed services</span> and
-                <span className="text-cyan-400"> AI infrastructure</span>.
+                Designing & Building scalable, <span className="text-zinc-800 dark:text-zinc-200 font-medium italic">High-performance distributed system with</span> AI-driven architectures and <span className="text-zinc-800 dark:text-zinc-200 font-medium italic"> production-ready </span> 
+                <span className="text-cyan-600 dark:text-cyan-400"> AI infrastructure</span>.
               </motion.p>
             </div>
 
@@ -142,31 +218,24 @@ export default function Home() {
               transition={{ delay: 0.7 }}
               className="flex flex-wrap gap-6 items-center mt-12"
             >
-              <button className="btn-primary px-12 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest text-[#050507]">
-                EXPLORE_SYSTEMS <ArrowUpRight size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              <div className="flex flex-row items-center gap-6">
+              <button className="btn-primary px-7 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest text-[#050507]">
+                VIEW_PROJECTS <ArrowUpRight size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
-              <button className="btn-secondary px-10 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest">
-                <Terminal size={18} /> DOCS.CMD
+              <button className="btn-secondary px-7 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest">
+                <Terminal size={18} /> RESUME_DOCS
               </button>
+              </div>
             </motion.div>
           </div>
+          
 
-          {/* 3D Model - Dedicated Right Column Viewport */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
-            className="hidden lg:flex items-center justify-center h-full relative"
-          >
-            <div className="w-full h-full relative group flex items-center justify-center">
-              {/* Subtle Ambient Light behind the model */}
-              <div className="absolute inset-0 bg-radial-gradient from-cyan-500/5 via-transparent to-transparent blur-3xl opacity-50"></div>
-
-              <div className="w-full h-[90vh] grayscale-[0.05] hover:grayscale-0 transition-all duration-700">
-                <Hero3D />
-              </div>
+          {/* 3D Model on the Right - Now In-Flow */}
+          <div className="hidden lg:flex h-full relative items-center justify-center p-12">
+            <div className="w-full h-full relative z-20">
+              <Hero3D />
             </div>
-          </motion.div>
+          </div>
 
           {/* Ultra-Clean Bottom Bar */}
           <div className="absolute bottom-10 left-6 md:left-24 right-6 md:right-24 flex justify-between items-end z-40">
@@ -185,18 +254,18 @@ export default function Home() {
               className="flex flex-col items-center gap-4 opacity-40 hover:opacity-100 transition-opacity"
             >
               <div className="mouse-scroll"></div>
-              <span className="text-[8px] font-mono text-zinc-600 uppercase tracking-[0.6em]">Initialize_Scroll</span>
+              <span className="text-[8px] font-mono text-zinc-600 uppercase tracking-[0.6em]">Scroll_to_Explore</span>
             </motion.div>
 
             <div className="hidden md:flex gap-8 text-zinc-700 text-[10px] font-mono">
-              <span>TCP_CONNECTED</span>
-              <span>LENS_V2.0.4</span>
+              {/* <span>TCP_CONNECTED</span> */}
+              <span>AI ROBO</span>
             </div>
           </div>
         </section>
 
         {/* STRATEGY & IMPACT (EXECUTIVE SUMMARY) */}
-        <div className="section-divider"></div>
+        {/* <div className="section-divider"></div>
         <section id="about" className="py-32 px-6 md:px-24 relative overflow-hidden">
           <div className="grid md:grid-cols-12 gap-16 items-start relative z-10">
             <div className="md:col-span-4">
@@ -210,11 +279,15 @@ export default function Home() {
             </div>
             <div className="md:col-span-8 space-y-10">
               <p className="text-xl text-zinc-500 leading-relaxed max-w-3xl font-light">
+                <p className="text-2xl md:text-2xl font-bold leading-tight tracking-tight text-white mb-4">Hi, I’m Abhishek Yadav,</p> a passionate Full Stack Web Developer dedicated to creating extraordinary visual and functional web experiences. I love transforming ideas into modern, responsive, and scalable applications using technologies like React/Next.js, Node.js/Django, Express, and MongoDB. I focus on writing clean, efficient code and crafting intuitive user interfaces that deliver seamless performance across all devices. As a fresher, I’m constantly learning and exploring the latest trends in web development, cloud deployment, and AI integration to stay ahead of the curve. My goal is to build impactful digital products that combine creativity, functionality, and innovation — turning imagination into reality through code.
+
+                My journey began with a passion for problem-solving through code. Today, I work with modern technologies and frameworks to build applications that exceed expectations and drive business growth.
+
                 I specialize in designing and implementing high-throughput backend services and AI-driven platforms that operate under intense load. My approach combines <strong>rigorous system design principles</strong> with a <strong>bias for action</strong>, ensuring that technical choices directly translate to measurable business outcomes.
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-12 pt-12 border-t border-white/5">
                 {/* Stat Cards with 3D Entrance */}
-                {[
+                {/* {[
                   { label: "Throughput", val: "100k+", unit: "RPS" },
                   { label: "Availability", val: "99.999", unit: "%" },
                   { label: "Efficiency", val: "40", unit: "% Cost Red" },
@@ -244,7 +317,101 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </section> */} 
+
+        {/* STRATEGY & IMPACT (EXECUTIVE SUMMARY) */}
+        <div className="section-divider"></div>
+
+        <section
+          id="about"
+          className="py-30 px-6 md:px-24 relative overflow-hidden"
+        >
+          <div className="grid md:grid-cols-12 gap-16 items-start relative z-10">
+
+            {/* ───────────────── TOP CENTER HEADING ───────────────── */}
+            <div className="md:col-span-12 text-center space-y-6">
+              <div className="inline-flex items-center justify-center gap-2 px-3 py-1 border border-cyan-500/20 rounded-md bg-cyan-500/5 text-cyan-500/80 text-[10px] font-bold tracking-[0.3em] uppercase mx-auto">
+                Strategy & Impact
+              </div>
+
+              <h2 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-white">
+                Solving for{" "}
+                <span className="text-zinc-600 font-light italic">complexity,</span>
+                <br />
+                building for <span className="cyber-gradient-text">scale.</span>
+              </h2>
+            </div>
+
+            {/* ───────────────── MIDDLE LEFT – INTRODUCTION ───────────────── */}
+            <div className="md:col-span-5 space-y-8 mt-20">
+              <div className="space-y-6 text-zinc-500 text-lg leading-relaxed font-light">
+                <p className="text-4xl font-bold text-white">
+                  About <span className="cyber-gradient-text">Me</span>
+                </p>
+         
+                <p className="text-2xl ">
+                  Hi, I’m <strong>Abhishek Yadav</strong>, a passionate <strong>Full Stack Developer</strong> focused on crafting modern, responsive, and scalable digital experiences. I work with <strong>React/Next.js, Node.js/Django, Express, and MongoDB/My SQL</strong> to transform ideas into production-ready applications.
+                  <br />
+                  As a <strong>Developer</strong>, I continuously explore emerging trends in <strong>System architecture, cloud deployment, and AI integration</strong> to build systems that are both visually compelling and technically resilient.
+                </p>
+                <p className="text-2xl">
+                  I specialize in designing high-throughput backend services and
+                  AI-driven platforms using <strong>system design principles</strong>{" "}
+                  and a <strong>bias for execution</strong>, ensuring technology choices
+                  translate directly into measurable business impact.
+                </p>
+              </div>
+            </div>
+
+            {/* ───────────────── MIDDLE RIGHT – VISUAL ───────────────── */}
+            {/* <div className="md:col-span-7 mt-20">
+              <TiltCard>
+                <LiveDiagnostics />
+              </TiltCard>
+            </div> */}
+
+            {/* ───────────────── BOTTOM CENTER – STATS ───────────────── */}
+            <div className="md:col-span-8 flex justify-center pt-28">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-14">
+                {[
+                  // { label: "Throughput", val: "100k+", unit: "RPS" },
+                  // { label: "Availability", val: "99.999", unit: "%" },
+                  // { label: "Efficiency", val: "40", unit: "% Cost Red" },
+                  // { label: "Latency", val: "8ms", unit: "p99" }
+                  { label: "Leetcode", val: "100", unit: "+" },
+                  { label: "Accuracy", val: "5.99", unit: "%" },
+                  { label: "Projects", val: "5", unit: "+" },
+                  { label: "System Design", val: "-", unit: "" }
+                ].map((stat, i) => (
+                  <motion.div
+                    key={i}
+                    className="group text-center"
+                    initial={{ opacity: 0, rotateY: -20, translateZ: -50 }}
+                    whileInView={{ opacity: 1, rotateY: 0, translateZ: 0 }}
+                    transition={{ delay: i * 0.1, duration: 0.8 }}
+                    viewport={{ once: true }}
+                    style={{ transformStyle: "preserve-3d" }}
+                  >
+                    <div
+                      className="text-4xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors"
+                      style={{ transform: "translateZ(20px)" }}
+                    >
+                      {stat.val}
+                      <span className="text-cyan-600 text-sm ml-1">
+                        {stat.unit}
+                      </span>
+                    </div>
+                    <div className="text-[10px] text-zinc-600 font-mono uppercase tracking-[0.2em]">
+                      {stat.label}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+          </div>
         </section>
+
 
         {/* TECHNICAL ARSENAL */}
         <div className="section-divider"></div>
@@ -259,10 +426,24 @@ export default function Home() {
                 <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 group-hover:bg-cyan-500/20 transition-all">
                   <Terminal className="text-cyan-500" size={20} />
                 </div>
-                Languages
+                Programming Languages
               </div>
               <div className="flex flex-wrap gap-3">
-                {["Go", "Python", "TypeScript", "C++", "Rust", "Java"].map(s => (
+                {["Python","Javascript","TypeScript", "Java","C++",].map(s => (
+                  <span key={s} className="px-4 py-2 bg-zinc-900/50 border border-white/5 text-zinc-500 font-mono text-xs hover:border-cyan-500/30 hover:text-cyan-400 transition-all cursor-crosshair">{s}</span>
+                ))}
+              </div>
+            </TiltCard>
+
+            <TiltCard className="space-y-8 group">
+              <div className="flex items-center gap-4 text-white font-bold tracking-tight text-3xl uppercase">
+                <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 group-hover:bg-cyan-500/20 transition-all">
+                  <Server className="text-cyan-500" size={20} />
+                </div>
+                Frontend & Backend 
+              </div>
+              <div className="flex flex-wrap gap-3">
+                {["HTML", "CSS", "React.js/vite", "Next.js", "Tailwind CSS/Bootstrap", "Express.js/Node.js", "RESTful APIs", "WebSockets/WebRTC", "Django/FastAPI"].map(s => (
                   <span key={s} className="px-4 py-2 bg-zinc-900/50 border border-white/5 text-zinc-500 font-mono text-xs hover:border-cyan-500/30 hover:text-cyan-400 transition-all cursor-crosshair">{s}</span>
                 ))}
               </div>
@@ -276,7 +457,7 @@ export default function Home() {
                 Cloud & Infra
               </div>
               <div className="flex flex-wrap gap-3">
-                {["AWS (EKS, Lambda)", "Terraform", "Kubernetes", "Docker", "GCP", "CI/CD"].map(s => (
+                {["Git/GitHub", "AWS (Basic)", "Terraform", "Kubernetes", "Docker", "GCP", "CI/CD"].map(s => (
                   <span key={s} className="px-4 py-2 bg-zinc-900/50 border border-white/5 text-zinc-500 font-mono text-xs hover:border-cyan-500/30 hover:text-cyan-400 transition-all cursor-crosshair">{s}</span>
                 ))}
               </div>
@@ -290,49 +471,53 @@ export default function Home() {
                 Data & Messaging
               </div>
               <div className="flex flex-wrap gap-3">
-                {["PostgreSQL", "Redis", "Kafka", "Cassandra", "MongoDB", "ElasticSearch"].map(s => (
+                {["My SQL", "MongoDB", "PostgreSQL", "Redis", "Kafka", "Cassandra",].map(s => (
                   <span key={s} className="px-4 py-2 bg-zinc-900/50 border border-white/5 text-zinc-500 font-mono text-xs hover:border-cyan-500/30 hover:text-cyan-400 transition-all cursor-crosshair">{s}</span>
                 ))}
               </div>
             </TiltCard>
 
-            <div className="space-y-8 group">
+            <TiltCard className="space-y-8 group">
               <div className="flex items-center gap-4 text-white font-bold tracking-tight text-3xl uppercase">
                 <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 group-hover:bg-cyan-500/20 transition-all">
-                  <Cpu className="text-cyan-500" size={20} />
+                  <Terminal className="text-cyan-500" size={20} />
                 </div>
                 AI & Intelligence
               </div>
               <div className="flex flex-wrap gap-3">
-                {["TensorFlow", "PyTorch", "LangChain", "Vector DBs", "OpenAI API", "HuggingFace"].map(s => (
-                  <span key={s} className="px-3 py-1 bg-white/5 border border-white/10 text-zinc-400 font-mono text-sm">{s}</span>
+                 {["TensorFlow", "PyTorch", "LangChain", "LangGraph", "OpenAI API", "HuggingFace", "Transformers", "NLP", "RAG", "n8n Workflow Automation"].map(s => (
+                  <span key={s} className="px-4 py-2 bg-zinc-900/50 border border-white/5 text-zinc-500 font-mono text-xs hover:border-cyan-500/30 hover:text-cyan-400 transition-all cursor-crosshair">{s}</span>
                 ))}
               </div>
-            </div>
+            </TiltCard>
 
-            <div className="space-y-6">
+            <TiltCard className="space-y-6 group">
               <div className="flex items-center gap-3 text-white font-bold tracking-tighter text-2xl uppercase">
                 <Layers className="text-cyan-500" size={24} /> Systems Thinking
               </div>
-              <div className="flex flex-wrap gap-3 text-zinc-500 font-mono text-xs leading-loose">
-                Distributed Systems, Event-Driven Arch, Microservices, CAP Theorem, Consistancy Models, SLOs/SLIs.
+               <div className="flex flex-wrap gap-3">
+                {[ "Load Balancing", "Distributed Systems", "Event-Driven Arch", "Microservices", "SLOs/SLIs"].map(s => (
+                  <span key={s} className="px-4 py-2 bg-zinc-900/50 border border-white/5 text-zinc-500 font-mono text-xs hover:border-cyan-500/30 hover:text-cyan-400 transition-all cursor-crosshair">{s}</span>
+                ))}
               </div>
-            </div>
+            </TiltCard>
 
-            <div className="space-y-6">
+            <TiltCard className="space-y-6 group">
               <div className="flex items-center gap-3 text-white font-bold tracking-tighter text-2xl uppercase">
                 <Shield className="text-cyan-500" size={24} /> Security & Tooling
               </div>
-              <div className="flex flex-wrap gap-3 text-zinc-500 font-mono text-xs leading-loose">
-                OAuth2, JWT, gRPC, Protobuf, Git, Prometheus, Grafana, ELK Stack.
+              <div className="flex flex-wrap gap-3">
+                {[ "OAuth2", "JWT", "Linux", "Protobuf", "Git", "Prometheus", "Grafana", ].map(s => (
+                  <span key={s} className="px-4 py-2 bg-zinc-900/50 border border-white/5 text-zinc-500 font-mono text-xs hover:border-cyan-500/30 hover:text-cyan-400 transition-all cursor-crosshair">{s}</span>
+                ))}
               </div>
-            </div>
+            </TiltCard>
 
           </div>
         </section>
 
         {/* FLAGSHIP PROJECTS */}
-        <section id="projects" className="py-32 px-6 md:px-24">
+        {/* <section id="projects" className="py-32 px-6 md:px-24">
           <h2 className="text-[12rem] font-black text-white/5 absolute -left-10 select-none pointer-events-none">PROJECTS</h2>
           <div className="relative z-10 flex flex-col gap-40">
 
@@ -345,7 +530,8 @@ export default function Home() {
                   viewport={{ once: true }}
                   className={`${idx % 2 !== 0 ? 'md:order-2' : ''} space-y-8`}
                 >
-                  <div className={`${idx % 2 !== 0 ? 'text-purple-500' : 'text-cyan-500'} font-mono text-xs font-bold tracking-[0.4em] uppercase`}>
+                  <div className={`inline-flex items-center gap-2 px-3 py-1 mb-6 border rounded-full text-[10px] font-bold tracking-widest uppercase ${idx % 2 !== 0 ? 'border-purple-500/20 bg-purple-500/5 text-purple-400' : 'border-cyan-500/20 bg-cyan-500/5 text-cyan-400'}`}>
+                    <div className={`w-1.5 h-1.5 rounded-full ${idx % 2 !== 0 ? 'bg-purple-500' : 'bg-cyan-500'}`}></div>
                     {project.category}
                   </div>
                   <h3 className="text-5xl font-bold tracking-tighter">{project.title}</h3>
@@ -377,11 +563,11 @@ export default function Home() {
                   <div className="flex gap-8 items-center pt-4">
                     <button
                       onClick={() => setSelectedProject(project)}
-                      className={`flex items-center gap-2 text-white font-bold text-sm tracking-widest border-b-2 ${idx % 2 !== 0 ? 'border-purple-500 hover:text-purple-400 hover:border-purple-400' : 'border-cyan-500 hover:text-cyan-400 hover:border-cyan-400'} pb-1 transition-all uppercase`}
+                      className={`flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-xs tracking-widest transition-all ${idx % 2 !== 0 ? 'bg-purple-500 hover:bg-purple-400 text-black' : 'bg-cyan-500 hover:bg-cyan-400 text-black'} uppercase shadow-lg shadow-cyan-500/20`}
                     >
-                      Deep_Dive_Architecture <Info size={16} />
+                      View Architecture <Info size={16} />
                     </button>
-                    <a href="#" className="flex items-center gap-2 text-zinc-500 font-bold text-sm tracking-widest hover:text-white transition-all uppercase">Source_Code</a>
+                    <a href="#" className="flex items-center gap-2 text-zinc-500 font-bold text-sm tracking-widest hover:text-white transition-all uppercase">Source Code</a>
                   </div>
                 </motion.div>
                 <TiltCard className={`${idx % 2 !== 0 ? 'md:order-1' : ''} aspect-square bg-zinc-900 border border-white/10 rounded-2xl flex items-center justify-center p-12 group hover:border-cyan-500/30 transition-all overflow-hidden relative shadow-2xl`}>
@@ -397,7 +583,7 @@ export default function Home() {
             ))}
 
           </div>
-        </section>
+        </section> */}
 
         {/* SYSTEM DESIGN THINKING */}
         <section id="systems" className="py-32 px-6 md:px-24 bg-zinc-950 relative border-t border-white/5">
@@ -419,7 +605,7 @@ export default function Home() {
             <TiltCard className="bg-zinc-950 p-12 space-y-6 group hover:bg-zinc-900 transition-all">
               <h3 className="text-2xl font-bold tracking-tighter">Observability & Resilience</h3>
               <p className="text-zinc-500 leading-relaxed text-sm">
-                "If it's not monitored, it doesn't exist." Leveraging OpenTelemetry for distributed tracing to debug p99 latency spikes across microservices. Designing for failure using Bulkheads and Graceful Degradation.
+                "If it's not monitored, it doesn't exist". Leveraging OpenTelemetry for distributed tracing to debug p99 latency spikes across microservices. Designing for failure using Bulkheads and Graceful Degradation.
               </p>
               <ul className="text-[10px] font-mono text-cyan-500 space-y-1">
                 <li>- RED/USE Metrics Tracking</li>
@@ -479,7 +665,7 @@ export default function Home() {
         </section>
 
         {/* EXPERIENCE (STAR FORMAT) */}
-        <section className="py-32 px-6 md:px-24 bg-zinc-900/10 border-t border-white/5">
+        {/* <section className="py-32 px-6 md:px-24 bg-zinc-900/10 border-t border-white/5">
           <h2 className="text-sm font-mono text-cyan-500 mb-16 uppercase tracking-[0.3em]">Professional Trajectory</h2>
           <div className="space-y-24">
             <div className="max-w-4xl">
@@ -530,7 +716,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* OPEN SOURCE & INNOVATION */}
         <section className="py-32 px-6 md:px-24 bg-zinc-950">
@@ -545,7 +731,7 @@ export default function Home() {
                 <span className="text-[10px] font-mono text-zinc-500 bg-white/5 px-2 py-1">GENERIC_SCHED_CACHE</span>
                 <span className="text-[10px] font-mono text-zinc-500 bg-white/5 px-2 py-1">GOLANG</span>
               </div>
-              <a href="#" className="inline-block pt-4 text-cyan-400 text-xs font-bold font-mono hover:text-cyan-300 transition-colors tracking-widest">VIEW_PR_ON_GITHUB // 0x4F2A</a>
+              <a href="https://github.com/CodeBy-Abhishek" className="inline-block pt-4 text-cyan-400 text-xs font-bold font-mono hover:text-cyan-300 transition-colors tracking-widest">VIEW_PR_ON_GITHUB // 0x4F2A</a>
             </div>
 
             <div className="space-y-8">
@@ -583,7 +769,7 @@ export default function Home() {
                   <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-cyan-500 transition-colors">
                     <Mail size={18} className="group-hover:text-cyan-400" />
                   </div>
-                  engineer@example.com
+                  abhishek977266@gmail.com
                 </div>
                 <div className="flex items-center gap-4 text-zinc-400 font-mono text-sm group">
                   <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-cyan-500 transition-colors">
@@ -612,13 +798,13 @@ export default function Home() {
             <p className="text-zinc-500 font-mono text-sm mb-12 uppercase tracking-widest max-w-2xl">currently reviewing opportunities for L5+ roles at Big Tech / Infrastructure Scale-ups.</p>
 
             <div className="flex justify-center gap-8 mb-20">
-              <a href="#" className="p-4 bg-white/5 border border-white/10 rounded-full hover:bg-cyan-500 hover:text-black transition-all group">
+              <a href="https://github.com/CodeBy-Abhishek" className="p-4 bg-white/5 border border-white/10 rounded-full hover:bg-cyan-500 hover:text-black transition-all group">
                 <Github size={24} />
               </a>
-              <a href="#" className="p-4 bg-white/5 border border-white/10 rounded-full hover:bg-cyan-500 hover:text-black transition-all group">
+              <a href="https://www.linkedin.com/in/abhishek-yadav72/" className="p-4 bg-white/5 border border-white/10 rounded-full hover:bg-cyan-500 hover:text-black transition-all group">
                 <Linkedin size={24} />
               </a>
-              <a href="#" className="p-4 bg-white/5 border border-white/10 rounded-full hover:bg-cyan-500 hover:text-black transition-all group">
+              <a href="mailto:abhishek977266@gmail.com" className="p-4 bg-white/5 border border-white/10 rounded-full hover:bg-cyan-500 hover:text-black transition-all group">
                 <Mail size={24} />
               </a>
             </div>
@@ -626,14 +812,14 @@ export default function Home() {
             <div className="flex flex-col items-center gap-6 pb-12 opacity-30 group hover:opacity-100 transition-opacity">
               <div className="text-[9px] font-mono tracking-[0.4em] uppercase">Built with the modern stack</div>
               <div className="flex gap-8 items-center grayscale hover:grayscale-0 transition-all">
-                {["Next.js 15", "TypeScript", "TailwindCSS v4", "Framer Motion", "Spline", "Three.js"].map(tech => (
+                {["Next.js 15", "TypeScript", "TailwindCSS", "Framer Motion", "Spline", "Three.js"].map(tech => (
                   <span key={tech} className="text-[10px] font-mono">{tech}</span>
                 ))}
               </div>
             </div>
 
             <div className="text-[10px] text-zinc-700 font-mono tracking-[0.2em] uppercase">
-              Abhishek Yadav // Product Engineering // {new Date().getFullYear()}
+              Developer // Abhishek Yadav  // {new Date().getFullYear()}
             </div>
           </div>
         </footer>

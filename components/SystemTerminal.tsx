@@ -3,18 +3,18 @@ import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 const LOG_MESSAGES = [
-    "INITIALIZING_CORE_SYSTEMS...",
-    "ESTABLISHING_GRPC_CHANNELS...",
-    "CONNECTING_PROMETHEUS_ADAPTERS...",
-    "LOADING_VECTOR_EMBEDDINGS (FAISS)...",
-    "DECODING_KAFKA_STREAMS...",
-    "SYSTEM_HEALTH: OPTIMAL [0.999%]",
-    "AUTHENTICATING_USER_0x4F2A...",
-    "SYNCING_EDGE_REPLICAS...",
-    "DETECTION: P99_LATENCY_SPIKE [RESOLVED]",
-    "EXECUTING_CKPT_RESUME...",
-    "HEARTBEAT_ACK from SHARD_04...",
-    "ROTATING_JWT_SECRETS...",
+    "CORE_SYSTEMS: ONLINE",
+    "GRPC_GATEWAY: LISTENING",
+    "METRICS_ADAPTER: CONNECTED",
+    "LOADING_MODEL_REGISTRY...",
+    "KAFKA_CONSUMERS: ACTIVE",
+    "SYSTEM_HEALTH: 100%",
+    "USER_SESSION: AUTHENTICATED",
+    "DATA_REPLICATION: SYNCED",
+    "LATENCY_CHECK: 12ms [OK]",
+    "SERVICE_MESH: READY",
+    "CLUSTER_STATE: HEALTHY",
+    "SECURITY_POLICIES: ENFORCED",
 ];
 
 export default function SystemTerminal() {
@@ -32,14 +32,14 @@ export default function SystemTerminal() {
     }, [index]);
 
     return (
-        <div className="bg-black/80 backdrop-blur-xl border border-white/5 rounded-lg overflow-hidden font-mono text-[10px] shadow-2xl">
-            <div className="bg-zinc-900 px-4 py-2 border-b border-white/5 flex items-center justify-between">
+        <div className="bg-white/80 dark:bg-black/80 backdrop-blur-xl border border-zinc-200 dark:border-white/5 rounded-lg overflow-hidden font-mono text-[10px] shadow-2xl">
+            <div className="bg-zinc-100 dark:bg-zinc-900 px-4 py-2 border-b border-zinc-200 dark:border-white/5 flex items-center justify-between">
                 <div className="flex gap-1.5">
                     <div className="w-2 h-2 rounded-full bg-red-500/50"></div>
                     <div className="w-2 h-2 rounded-full bg-yellow-500/50"></div>
                     <div className="w-2 h-2 rounded-full bg-green-500/50"></div>
                 </div>
-                <div className="text-zinc-500 text-[9px] tracking-widest uppercase">System_Status_v2.0</div>
+                <div className="text-zinc-500 text-[9px] tracking-widest uppercase">System Status</div>
             </div>
             <div
                 ref={scrollRef}
@@ -52,8 +52,8 @@ export default function SystemTerminal() {
                         animate={{ opacity: 1, x: 0 }}
                         className="flex gap-3"
                     >
-                        <span className="text-cyan-500 opacity-50">[{new Date().toLocaleTimeString([], { hour12: false })}]</span>
-                        <span className={log.includes("OPTIMAL") ? "text-green-400" : "text-zinc-400"}>
+                        <span className="text-cyan-600 dark:text-cyan-500 opacity-50">[{new Date().toLocaleTimeString([], { hour12: false })}]</span>
+                        <span className={log.includes("OPTIMAL") ? "text-green-600 dark:text-green-400" : "text-zinc-600 dark:text-zinc-400"}>
                             {log}
                         </span>
                     </motion.div>

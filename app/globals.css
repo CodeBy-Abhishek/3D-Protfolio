@@ -16,9 +16,17 @@
 
 /* Custom Utilities layer is handled differently in v4 but standard CSS works */
 @layer components {
+
+  /* Adaptive Glass Panel */
   .glass-panel {
-    background-color: rgb(24 24 27 / 0.6);
+    background-color: rgb(255 255 255 / 0.6);
     backdrop-filter: blur(20px);
+    border: 1px solid rgb(0 0 0 / 0.05);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.05);
+  }
+
+  .dark .glass-panel {
+    background-color: rgb(24 24 27 / 0.6);
     border: 1px solid rgb(255 255 255 / 0.08);
     box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
   }
@@ -29,10 +37,12 @@
     color: transparent;
     background-image: linear-gradient(135deg,
         #22d3ee 0%,
-        #3b82f6 50%,
+        #3b82f6 25%,
+        #a855f7 50%,
+        #3b82f6 75%,
         #22d3ee 100%);
-    background-size: 200% auto;
-    animation: flow 1s linear infinite;
+    background-size: 300% auto;
+    animation: flow 3s linear infinite;
   }
 
   @keyframes flow {
@@ -46,8 +56,12 @@
   }
 
   .dot-grid {
-    background-image: radial-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px);
+    background-image: radial-gradient(rgb(0 0 0 / 0.05) 1px, transparent 1px);
     background-size: 40px 40px;
+  }
+
+  .dark .dot-grid {
+    background-image: radial-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px);
   }
 
   .btn-primary {
@@ -60,27 +74,43 @@
   }
 
   .btn-secondary {
-    @apply border border-white/10 bg-white/5 backdrop-blur-sm text-zinc-400 font-bold tracking-widest transition-all duration-300;
+    @apply border border-zinc-200 bg-white/50 backdrop-blur-sm text-zinc-600 font-bold tracking-widest transition-all duration-300;
+  }
+
+  .dark .btn-secondary {
+    @apply border-white/10 bg-white/5 text-zinc-400;
   }
 
   .btn-secondary:hover {
-    @apply border-white/20 bg-white/10 text-white scale-[1.02];
+    @apply border-zinc-300 bg-white/80 text-zinc-900 scale-[1.02];
+  }
+
+  .dark .btn-secondary:hover {
+    @apply border-white/20 bg-white/10 text-white;
   }
 
   .nav-link {
     font-size: 0.875rem;
-    /* text-sm */
     font-weight: 500;
-    color: #a1a1aa;
-    /* zinc-400 */
+    color: #52525b;
+    /* zinc-600 */
     transition-property: color;
     transition-duration: 150ms;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    /* tracking-widest */
+  }
+
+  .dark .nav-link {
+    color: #a1a1aa;
+    /* zinc-400 */
   }
 
   .nav-link:hover {
+    color: #0891b2;
+    /* cyan-600 */
+  }
+
+  .dark .nav-link:hover {
     color: #22d3ee;
     /* cyan-400 */
   }
@@ -156,15 +186,16 @@
 }
 
 body {
-  background-color: #050507;
-  color: #a1a1aa;
-  /* zinc-400 */
+  /* Colors handled by Tailwind classes in layout.tsx */
   -webkit-font-smoothing: antialiased;
   cursor: none;
-  background-image:
-    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
   background-size: 40px 40px;
   position: relative;
+}
+
+.dark body {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
 }
 
 /* Professional Noise Texture Overlay */

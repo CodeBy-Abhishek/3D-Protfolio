@@ -26,7 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${mono.variable}`}>
-      <body className="bg-zinc-950 text-white overflow-x-hidden">
+      <body className="bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white overflow-x-hidden transition-colors duration-300">
         <Cursor />
         {children}
       </body>

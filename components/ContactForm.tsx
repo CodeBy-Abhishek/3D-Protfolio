@@ -35,7 +35,7 @@ export default function ContactForm() {
                 <Send size={120} />
             </div>
 
-            <h3 className="text-3xl font-bold mb-8 tracking-tighter">INITIATE_CONTACT</h3>
+            <h3 className="text-3xl font-bold mb-8 tracking-tighter">Get in Touch</h3>
 
             <AnimatePresence mode="wait">
                 {status === 'success' ? (
@@ -47,8 +47,8 @@ export default function ContactForm() {
                         className="py-12 flex flex-col items-center text-center space-y-4"
                     >
                         <CheckCircle2 className="text-cyan-500" size={64} />
-                        <h4 className="text-xl font-bold">MESSAGE_DELIVERED</h4>
-                        <p className="text-zinc-500 font-mono text-sm max-w-xs">Transmission successful. Expect a response within 24 standard cycles.</p>
+                        <h4 className="text-xl font-bold">Message Sent</h4>
+                        <p className="text-zinc-500 font-mono text-sm max-w-xs">Thanks for reaching out. I'll get back to you shortly.</p>
                         <button
                             onClick={() => setStatus('idle')}
                             className="text-cyan-500 font-mono text-[10px] uppercase tracking-widest pt-4"
@@ -66,7 +66,7 @@ export default function ContactForm() {
                         className="space-y-6"
                     >
                         <div className="space-y-2">
-                            <label className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Target_Email</label>
+                            <label className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Email Address</label>
                             <input
                                 required
                                 type="email"
@@ -78,7 +78,7 @@ export default function ContactForm() {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Transmission_Payload</label>
+                            <label className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Message</label>
                             <textarea
                                 required
                                 rows={4}
@@ -91,7 +91,7 @@ export default function ContactForm() {
 
                         {status === 'error' && (
                             <div className="flex items-center gap-2 text-red-400 text-xs font-mono">
-                                <AlertCircle size={14} /> CONNECTION_FAILED: Retrying...
+                                <AlertCircle size={14} /> Error sending message. Please try again.
                             </div>
                         )}
 
@@ -106,7 +106,7 @@ export default function ContactForm() {
                                 </>
                             ) : (
                                 <>
-                                    DISPATCH_MESSAGE <Send size={18} />
+                                    Send Message <Send size={18} />
                                 </>
                             )}
                         </button>

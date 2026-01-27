@@ -48,8 +48,9 @@ export default function TiltCard({ children, className = "" }: TiltCardProps) {
             </div>
             {/* Glare effect */}
             <motion.div
-                className="absolute inset-0 z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_var(--x)_var(--y),rgba(255,255,255,0.05)_0%,transparent_80%)]"
+                className="absolute inset-0 z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity mix-blend-overlay"
                 style={{
+                    background: "radial-gradient(circle at var(--x) var(--y), rgba(255,255,255,0.15) 0%, transparent 50%)",
                     "--x": useTransform(mouseXSpring, [-0.5, 0.5], ["0%", "100%"]),
                     "--y": useTransform(mouseYSpring, [-0.5, 0.5], ["0%", "100%"]),
                 } as any}

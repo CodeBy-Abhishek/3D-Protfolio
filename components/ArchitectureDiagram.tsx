@@ -79,7 +79,7 @@ export default function ArchitectureDiagram() {
                                 className="flex items-center gap-3 px-4 py-2 bg-black/40 border border-white/5 rounded-lg backdrop-blur-sm"
                             >
                                 <Binary className="text-zinc-600" size={14} />
-                                <span className="text-[9px] font-mono text-zinc-500 uppercase">Message_Bus_Active</span>
+                                <span className="text-[9px] font-mono text-zinc-500 uppercase">Message Bus Active</span>
                             </motion.div>
                         </div>
                     </motion.div>
@@ -115,11 +115,11 @@ export default function ArchitectureDiagram() {
             <div className="absolute bottom-8 left-8 p-4 bg-black/40 border border-white/5 rounded-xl backdrop-blur-md z-30">
                 <div className="flex items-center gap-2 mb-2">
                     <Zap size={12} className="text-yellow-500" />
-                    <span className="text-[10px] font-mono text-zinc-400">SYSTEM_HEAT_MAP: STABLE</span>
+                    <span className="text-[10px] font-mono text-zinc-400">System Load: Stable</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <Shield size={12} className="text-cyan-500" />
-                    <span className="text-[10px] font-mono text-zinc-400">ENCRYPTION_L5: ACTIVE</span>
+                    <span className="text-[10px] font-mono text-zinc-400">Encryption: Active</span>
                 </div>
             </div>
         </div>

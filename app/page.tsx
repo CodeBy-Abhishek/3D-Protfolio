@@ -218,14 +218,41 @@ export default function Home() {
               transition={{ delay: 0.7 }}
               className="flex flex-wrap gap-6 items-center mt-12"
             >
-              <div className="flex flex-row items-center gap-6">
+              {/* <div className="flex flex-row items-center gap-6">
               <button className="btn-primary px-7 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest text-[#050507]">
                 VIEW_PROJECTS <ArrowUpRight size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
               <button className="btn-secondary px-7 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest">
                 <Terminal size={18} /> RESUME_DOCS
               </button>
-              </div>
+              </div> */}
+              <div className="flex flex-row items-center gap-6">
+              {/* <button className="btn-primary px-7 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest text-[#050507]">
+                VIEW_PROJECTS
+              </button> */}
+              <button className="btn-primary px-7 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest text-[#050507]">
+                <a
+                  href="https://github.com/CodeBy-Abhishek?tab=repositories"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  // className="btn-secondary px-7 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest"
+                >
+                  <Terminal size={1} />VIEW_PROJECTS
+                </a>
+              </button>
+
+
+              <a
+                href="/ABHISHEKRESUME.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-secondary px-7 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest"
+              >
+                <Terminal size={18} />
+                RESUME
+              </a>
+            </div>
+
             </motion.div>
           </div>
           

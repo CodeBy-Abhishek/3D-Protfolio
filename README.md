@@ -1,4 +1,4 @@
-# Big Tech Portfolio V2 (Next.js Edition)
+# 3D Portfolio  (Next.js Edition)
 
 ## 🚀 Overview
 

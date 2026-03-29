@@ -29,7 +29,11 @@ export default function Hero3D() {
                 frameBorder="0"
                 width="100%"
                 height="100%"
+<<<<<<< HEAD
                 className={`w-full h-full transition-opacity duration-1000 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+=======
+                className={`w-full h-full pointer-events-none transition-opacity duration-1000 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+>>>>>>> 7785240 (Update Portfolio)
                 onLoad={() => setIsLoading(false)}
                 title="3D Robot Model"
             ></iframe>

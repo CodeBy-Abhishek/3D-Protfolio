@@ -41,7 +41,7 @@ export default function TiltCard({ children, className = "" }: TiltCardProps) {
                 rotateY,
                 transformStyle: "preserve-3d",
             }}
-            className={`relative transition-all duration-200 ease-out ${className}`}
+            className={`relative transition-all duration-200 ease-out group ${className}`}
         >
             <div style={{ transform: "translateZ(30px)" }} className="relative z-10">
                 {children}

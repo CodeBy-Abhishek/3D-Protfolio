@@ -225,6 +225,7 @@ export default function Home() {
                  Abhishek
                 </motion.span>
               </motion.h1>
+              
               <span className="text-5xl md:text-[1.5rem] text-transparent bg-clip-text bg-gradient-to-r from-zinc-800 via-zinc-600 to-zinc-400 dark:from-white dark:via-zinc-400 dark:to-zinc-600">Full Stack Developer | AI/ML </span>
 
               <motion.div

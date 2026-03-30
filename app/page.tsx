@@ -7,11 +7,17 @@ import ProjectDetails from '@/components/ProjectDetails';
 import SystemBoot from '@/components/SystemBoot';
 import TiltCard from '@/components/TiltCard';
 import ThemeToggle from '@/components/ThemeToggle';
-<<<<<<< HEAD
-import { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, ArrowUpRight, Terminal, Server, Cpu, Database, Shield, Zap, Activity, Layers, TerminalSquare, MessageSquare, Info, X } from 'lucide-react';
-import { AnimatePresence, motion, useScroll, useSpring, useTransform } from 'framer-motion';
-
+import { useState, useEffect, useRef } from 'react';
+import {
+  Github, Linkedin, Mail, ArrowUpRight, Terminal, Server,
+  Database, Layers, Info, X, ExternalLink, Star, Brain, Workflow,
+  Zap, Shield, CheckCircle2, Award, ChevronRight, Cpu, FileText,
+  Search, MessageSquare, GitBranch, BarChart3, Network, Code2,
+} from 'lucide-react';
+import {
+  AnimatePresence, motion, useScroll, useSpring, useTransform,
+  useMotionValue, useInView,
+} from 'framer-motion';
 
 // ═══════════════════════════════════════════════════════
 // ANIMATION VARIANTS
@@ -29,20 +35,6 @@ function stagger(delay = 0.08) {
 // ═══════════════════════════════════════════════════════
 const PROJECTS = [
   {
-<<<<<<< HEAD
-    id: 'task-engine',
-    title: 'Hyper-Scale Task Orchestration Engine',
-    category: 'Distributed Systems // Infrastructure',
-    problem: 'A high-frequency trading platform struggled with inconsistent task priority and worker starvation under burst loads of 50k+ jobs/sec.',
-    solution: 'Built a custom Go-based orchestration engine using Kafka as the backbone and Redis for real-time state management. Implemented a hierarchical priority queue system with weighted round-robin scheduling.',
-    metrics: [
-      '99.999% Service Availability over 12 months',
-      'p99 Scheduling Latency < 8ms under peak load',
-      'Scaled to 150k TPS (Transactions Per Second)',
-      'Atomic task execution with idempotent retries'
-    ],
-    tech: [ 'JavaScript','Go', 'Kafka', 'Redis', 'gRPC', 'Protobuf', 'Kubernetes', 'Prometheus'],
-=======
     id: 'ai-doc-intelligence',
     title: 'AI Document Intelligence',
     category: 'Agentic AI · RAG Pipeline',
@@ -54,7 +46,6 @@ const PROJECTS = [
     solution: 'Built a 3-stage pipeline: Computer Vision for document parsing → RAG with ChromaDB + all-MiniLM-L6-v2 → Agentic AI layer via Anthropic Claude API for intelligent Q&A and summarisation.',
     metrics: ['Live deployed on HuggingFace Spaces', '3-stage RAG + CV + Agentic pipeline', 'Semantic search via ChromaDB embeddings', 'Claude API agentic reasoning layer'],
     tech: ['Python', 'Anthropic API', 'ChromaDB', 'all-MiniLM-L6-v2', 'FastAPI', 'HuggingFace', 'RAG', 'CV'],
->>>>>>> 7785240 (Update Portfolio)
     details: [
       { title: 'Stage 1 — Computer Vision', content: 'CV models parse and extract structured content from PDFs, scanned images, and complex document layouts before indexing.' },
       { title: 'Stage 2 — RAG Pipeline', content: 'ChromaDB vector store with all-MiniLM-L6-v2 embeddings. Hybrid retrieval with contextual chunking for high-accuracy semantic search.' },
@@ -85,217 +76,6 @@ const PROJECTS = [
   },
 ];
 
-<<<<<<< HEAD
-export default function Home() {
-  const [selectedProject, setSelectedProject] = useState<typeof PROJECTS[0] | null>(null);
-  const [isBooting, setIsBooting] = useState(true);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // High-Performance Mouse Tracking for 3D Interaction
-  const mouseX = useSpring(0, { stiffness: 50, damping: 20 });
-  const mouseY = useSpring(0, { stiffness: 50, damping: 20 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 40; // Max rotation 20deg
-      const y = (e.clientY / window.innerHeight - 0.5) * -40;
-      mouseX.set(x);
-      mouseY.set(y);
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [mouseX, mouseY]);
-
-  return (
-    <>
-      <AnimatePresence>
-        {isBooting && <SystemBoot onComplete={() => setIsBooting(false)} />}
-      </AnimatePresence>
-
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-[55] bg-zinc-950/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 md:hidden"
-          >
-            {['Strategy', 'Stack', 'Engineering', 'Architecture'].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-2xl font-bold tracking-tighter text-white hover:text-cyan-400 transition-colors"
-                style={{ fontFamily: 'var(--font-mono)' }}
-              >
-                {item}
-              </a>
-            ))}
-            <a
-              href="#contact"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="mt-8 px-8 py-3 bg-cyan-500 text-black font-bold tracking-widest uppercase rounded-lg hover:bg-cyan-400 transition-colors"
-            >
-              Get in Touch
-            </a>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <main className="min-h-screen relative bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 overflow-x-hidden selection:bg-cyan-200 dark:selection:bg-cyan-900 selection:text-cyan-900 dark:selection:text-cyan-100 transition-colors duration-500">
-        {/* PERSISTENT 3D BACKGROUND LAYER */}
-        <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden" style={{ perspective: "1200px" }}>
-          <motion.div
-            style={{
-              x: useSpring(useTransform(useScroll().scrollYProgress, [0, 0.5], ["0%", "20%"]), { stiffness: 50, damping: 20 }),
-              y: useSpring(useTransform(useScroll().scrollYProgress, [0, 0.5], ["0%", "10%"]), { stiffness: 50, damping: 20 }),
-              rotateX: mouseY,
-              rotateY: mouseX,
-              scale: useTransform(useScroll().scrollYProgress, [0, 0.5], [1, 0.8]),
-              opacity: useTransform(useScroll().scrollYProgress, [0, 0.8, 1], [0.8, 0.4, 0]),
-              transformStyle: "preserve-3d"
-            }}
-            className="absolute right-0 top-0 w-full lg:w-1/2 h-full flex items-center justify-center"
-          >
-            <div className="w-full h-[90vh] grayscale-[0.1] hover:grayscale-0 transition-all duration-1000" style={{ transform: "translateZ(50px)" }}>
-              <Hero3D />
-            </div>
-          </motion.div>
-        </div>
-
-        {/* NAVIGATION - Floating Pill Design */}
-        <nav className="fixed w-full top-0 z-[60] px-6 md:px-12 py-6 pointer-events-none">
-          <div className="max-w-[1400px] mx-auto flex justify-between items-center backdrop-blur-xl border border-zinc-200 dark:border-white/5 rounded-2xl bg-white/50 dark:bg-zinc-950/50 p-4 pointer-events-auto shadow-lg dark:shadow-none">
-            <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="font-mono text-xl font-bold tracking-tighter cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1 group">
-              <span className="text-zinc-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">DEV</span><span className="text-cyan-500 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">. AI</span>
-            </a>
-
-            <div className="hidden md:flex gap-10 items-center">
-              {['About', 'Stack', 'Projects', 'Engineering', 'Architecture'].map((item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  className="nav-link text-[10px] font-bold tracking-widest text-zinc-600 dark:text-zinc-500 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all uppercase"
-                >
-                  {item}
-                </a>
-              ))}
-              <div className="h-4 w-px bg-zinc-300 dark:bg-white/10 mx-2"></div>
-              <ThemeToggle />
-              <a href="#contact" className="px-4 py-2 border border-cyan-500/30 rounded-lg bg-cyan-500/5 hover:bg-cyan-500/20 transition-all text-[10px] font-mono text-cyan-600 dark:text-cyan-400 font-bold tracking-widest uppercase">
-                Connect
-              </a>
-            </div>
-
-            <div className="md:hidden flex items-center gap-4">
-              <ThemeToggle />
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="text-zinc-800 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors p-2"
-              >
-                {isMobileMenuOpen ? <X size={24} /> : <Layers size={24} />}
-              </button>
-            </div>
-          </div>
-        </nav>
-
-        {/* HERO SECTION - Refined Side-by-Side Split */}
-        <section className="relative h-screen grid lg:grid-cols-[45%_55%] items-center px-6 md:px-12 lg:px-24 overflow-hidden bg-zinc-50/50 dark:bg-[#050507] transition-colors duration-500">
-          {/* Text Content - Focused Left Column */}
-          <div className="z-30 flex flex-col justify-center min-h-[60vh] relative pr-0 lg:pr-12">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex items-center gap-3 text-cyan-600 dark:text-cyan-500/60 text-[20px] font-bold tracking-[0.5em] uppercase mb-8"
-            >
-              <div className="w-1.5 h-1.5 rounded-full bg-cyan-600 dark:bg-cyan-500 shadow-[0_0_10px_rgba(34,211,238,0.8)] animate-pulse"></div>
-              Developer Portfolio<span className="text-zinc-400 dark:text-zinc-600 px-1"></span>
-            </motion.div>
-
-            <div className="space-y-2">
-              <motion.h1
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2, duration: 0.8 }}
-                className="font-bold tracking-tighter leading-[0.9] text-zinc-900 dark:text-white flex flex-col"
-              >
-                <span className="text-7xl md:text-[6.0rem] text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 via-zinc-600 to-zinc-400 dark:from-white dark:via-zinc-400 dark:to-zinc-600">Hi, I'm </span>
-                <motion.span className="text-6xl md:text-[5.5rem] font-black -mt-2 cyber-gradient-text leading-[0.85]">
-                 Abhishek
-                </motion.span>
-              </motion.h1>
-              
-              <span className="text-5xl md:text-[1.5rem] text-transparent bg-clip-text bg-gradient-to-r from-zinc-800 via-zinc-600 to-zinc-400 dark:from-white dark:via-zinc-400 dark:to-zinc-600">Full Stack Developer | AI/ML </span>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="w-24 h-1 bg-cyan-500/20 mb-4 mt-4"
-              ></motion.div>
-
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="text-lg md:text-2xl text-zinc-600 dark:text-zinc-500 max-w-lg leading-relaxed font-light"
-              >
-                Designing & Building scalable, <span className="text-zinc-800 dark:text-zinc-200 font-medium italic">High-performance distributed system with</span> AI-driven architectures and <span className="text-zinc-800 dark:text-zinc-200 font-medium italic"> production-ready </span> 
-                <span className="text-cyan-600 dark:text-cyan-400"> AI infrastructure</span>.
-              </motion.p>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-              className="flex flex-wrap gap-6 items-center mt-12"
-            >
-              {/* <div className="flex flex-row items-center gap-6">
-              <button className="btn-primary px-7 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest text-[#050507]">
-                VIEW_PROJECTS <ArrowUpRight size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </button>
-              <button className="btn-secondary px-7 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest">
-                <Terminal size={18} /> RESUME_DOCS
-              </button>
-              </div> */}
-              <div className="flex flex-row items-center gap-6">
-              {/* <button className="btn-primary px-7 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest text-[#050507]">
-                VIEW_PROJECTS
-              </button> */}
-              <button className="btn-primary px-7 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest text-[#050507]">
-                <a
-                  href="https://github.com/CodeBy-Abhishek?tab=repositories"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  // className="btn-secondary px-7 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest"
-                >
-                  <Terminal size={1} />VIEW_PROJECTS
-                </a>
-              </button>
-
-
-              <a
-                href="/Abhishek Yadav Resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-secondary px-7 py-5 rounded-2xl flex items-center gap-3 group text-sm font-bold tracking-widest"
-              >
-                <Terminal size={18} />
-                RESUME
-              </a>
-            </div>
-
-            </motion.div>
-          </div>
-          
-
-          {/* 3D Model on the Right - Now In-Flow */}
-          <div className="hidden lg:flex h-full relative items-center justify-center p-12">
-            <div className="w-full h-full relative z-20">
-              <Hero3D />
-=======
 const INTERNSHIPS = [
   { company: 'Google Developer Campus', role: 'Developer Program Participant', period: '2024', highlight: 'AI / ML track — build & deploy workshops', color: 'bg-cyan-400' },
   { company: 'Codevirus Security', role: 'Security & Development Intern', period: '2024', highlight: 'Vulnerability assessment & secure code review', color: 'bg-emerald-400' },
@@ -386,8 +166,9 @@ function StatCard({ val, unit, label }: { val: string; unit: string; label: stri
   const ref = useRef<HTMLDivElement>(null);
   const num = parseFloat(val.replace(/[^0-9.]/g, '')) || 0;
   const isFloat = val.includes('.');
+  const hasPlus = val.includes('+');
   const raw = useCountUp(isFloat ? Math.round(num * 100) : num, 1600, active);
-  const display = isFloat ? (raw / 100).toFixed(2) : String(raw);
+  const display = isFloat ? (raw / 100).toFixed(2) : String(raw) + (hasPlus ? '+' : '');
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setActive(true); }, { threshold: 0.5 });
     if (ref.current) obs.observe(ref.current);
@@ -412,6 +193,7 @@ function SectionTag({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Parallax scroll-reveal section wrapper
 function ScrollRevealSection({ children, className, id }: { children: React.ReactNode; className?: string; id?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
@@ -433,11 +215,11 @@ function AIArchitectureDiagram() {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   const nodes = [
-    { id: 'doc', label: 'L1: INGRESS', title: 'Document Loader', sub: 'PDF · Image · Web', Icon: FileText, color: '#22d3ee', delay: 0 },
-    { id: 'embed', label: 'L2: EMBEDDING', title: 'Vector Embedding', sub: 'all-MiniLM-L6-v2', Icon: Cpu, color: '#a78bfa', delay: 0.15 },
-    { id: 'vector', label: 'L3: RETRIEVAL', title: 'Vector Store', sub: 'ChromaDB · Search', Icon: Database, color: '#34d399', delay: 0.3 },
-    { id: 'llm', label: 'L4: REASONING', title: 'Claude API', sub: 'Agentic · Tool Use', Icon: Brain, color: '#fb923c', delay: 0.45 },
-    { id: 'out', label: 'L5: OUTPUT', title: 'Response', sub: 'Q&A · Summary', Icon: MessageSquare, color: '#22d3ee', delay: 0.6 },
+    { id: 'doc',    label: 'L1: INGRESS',   title: 'Document Loader', sub: 'PDF · Image · Web',      Icon: FileText,     color: '#22d3ee', delay: 0    },
+    { id: 'embed',  label: 'L2: EMBEDDING', title: 'Vector Embedding', sub: 'all-MiniLM-L6-v2',       Icon: Cpu,          color: '#a78bfa', delay: 0.15 },
+    { id: 'vector', label: 'L3: RETRIEVAL', title: 'Vector Store',     sub: 'ChromaDB · Search',      Icon: Database,     color: '#34d399', delay: 0.3  },
+    { id: 'llm',    label: 'L4: REASONING', title: 'Claude API',       sub: 'Agentic · Tool Use',     Icon: Brain,        color: '#fb923c', delay: 0.45 },
+    { id: 'out',    label: 'L5: OUTPUT',    title: 'Response',         sub: 'Q&A · Summary',          Icon: MessageSquare,color: '#22d3ee', delay: 0.6  },
   ];
 
   return (
@@ -452,7 +234,7 @@ function AIArchitectureDiagram() {
       }} />
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 0%, transparent 30%, #060810 90%)' }} />
       <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none" style={{ background: 'linear-gradient(to top, #060810, transparent)' }} />
-      {/* Mesh glow */}
+      {/* Mesh glows */}
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 20% 60%, rgba(34,211,238,0.07) 0%, transparent 50%), radial-gradient(ellipse at 80% 60%, rgba(167,139,250,0.07) 0%, transparent 50%)' }} />
 
       {/* Header */}
@@ -470,8 +252,8 @@ function AIArchitectureDiagram() {
       <div className="relative z-20 px-5 md:px-10 pb-6 pt-2">
         <div className="flex items-center justify-between gap-2 relative">
           {/* Connector lines with animated flow dots */}
-          {[0,1,2,3].map((i) => (
-            <div key={i} className="flex-1 relative h-px mx-1" style={{ background: `linear-gradient(90deg, ${nodes[i].color}50, ${nodes[i+1].color}50)` }}>
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="flex-1 relative h-px mx-1" style={{ background: `linear-gradient(90deg, ${nodes[i].color}50, ${nodes[i + 1].color}50)` }}>
               <motion.div className="absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full"
                 style={{ background: nodes[i].color, boxShadow: `0 0 10px ${nodes[i].color}` }}
                 animate={{ left: ['-4px', 'calc(100% + 4px)'] }}
@@ -491,7 +273,7 @@ function AIArchitectureDiagram() {
                 <div className="text-center mb-3">
                   <span className="text-[9px] font-mono tracking-[0.2em] uppercase" style={{ color: node.color + '90' }}>{node.label}</span>
                 </div>
-                <div className="relative w-[110px] md:w-[130px] rounded-xl border p-4 flex flex-col items-center gap-3 transition-all duration-300 group-hover:scale-105 cursor-default"
+                <div className="relative w-[100px] md:w-[120px] rounded-xl border p-4 flex flex-col items-center gap-3 transition-all duration-300 group-hover:scale-105 cursor-default"
                   style={{ background: `radial-gradient(ellipse at 50% 0%, ${node.color}14 0%, rgba(10,12,20,0.95) 70%)`, borderColor: `${node.color}35`, boxShadow: `0 0 30px ${node.color}10, inset 0 0 20px ${node.color}05` }}>
                   <div className="absolute -inset-px rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: `linear-gradient(135deg, ${node.color}25, transparent 60%)` }} />
                   <div className="w-11 h-11 rounded-lg flex items-center justify-center" style={{ background: `${node.color}15`, border: `1px solid ${node.color}30` }}>
@@ -537,16 +319,16 @@ function AIArchitectureDiagram() {
 }
 
 // ═══════════════════════════════════════════════════════
-// AGENT ORCHESTRATION DIAGRAM — LangChain style
+// AGENT ORCHESTRATION DIAGRAM — LangChain / MCP style
 // ═══════════════════════════════════════════════════════
 function AgentOrchestrationDiagram() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-80px' });
 
   const agents = [
-    { label: 'Scraper Agent', color: '#22d3ee', Icon: Search, desc: 'Web data extraction' },
-    { label: 'Enrich Agent', color: '#a78bfa', Icon: GitBranch, desc: 'CRM enrichment' },
-    { label: 'Score Agent', color: '#34d399', Icon: BarChart3, desc: 'Lead qualification' },
+    { label: 'Scraper Agent',  color: '#22d3ee', Icon: Search,      desc: 'Web data extraction' },
+    { label: 'Enrich Agent',   color: '#a78bfa', Icon: GitBranch,   desc: 'CRM enrichment'      },
+    { label: 'Score Agent',    color: '#34d399', Icon: BarChart3,   desc: 'Lead qualification'  },
     { label: 'Outreach Agent', color: '#fb923c', Icon: MessageSquare, desc: 'Personalised copy' },
   ];
 
@@ -570,7 +352,7 @@ function AgentOrchestrationDiagram() {
         </div>
 
         <div className="flex flex-col md:flex-row items-center gap-5 md:gap-0">
-          {/* Claude orchestrator */}
+          {/* Claude orchestrator hub */}
           <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ delay: 0.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] }} className="flex-shrink-0">
             <div className="w-[120px] h-[120px] rounded-2xl border border-violet-500/30 flex flex-col items-center justify-center gap-2 relative cursor-default"
@@ -580,322 +362,17 @@ function AgentOrchestrationDiagram() {
                 <div className="text-white text-[11px] font-bold">Claude API</div>
                 <div className="text-violet-400/60 text-[9px] font-mono">ORCHESTRATOR</div>
               </div>
+              {/* Pulsing ring */}
               <motion.div className="absolute -inset-2 rounded-2xl border border-violet-500/15"
                 animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.6, 0.2] }}
                 transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }} />
->>>>>>> 7785240 (Update Portfolio)
+              <motion.div className="absolute -inset-4 rounded-2xl border border-violet-500/08"
+                animate={{ scale: [1, 1.08, 1], opacity: [0.1, 0.4, 0.1] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }} />
             </div>
-          </div>
+          </motion.div>
 
-<<<<<<< HEAD
-          {/* Ultra-Clean Bottom Bar */}
-          <div className="absolute bottom-10 left-6 md:left-24 right-6 md:right-24 flex justify-between items-end z-40">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.3 }}
-              className="text-[9px] font-mono text-zinc-500 rotate-90 origin-left translate-y-[-20px]"
-            >
-              LOC: 40.7128° N, 74.0060° W
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.5 }}
-              className="flex flex-col items-center gap-4 opacity-40 hover:opacity-100 transition-opacity"
-            >
-              <div className="mouse-scroll"></div>
-              <span className="text-[8px] font-mono text-zinc-600 uppercase tracking-[0.6em]">Scroll_to_Explore</span>
-            </motion.div>
-
-            <div className="hidden md:flex gap-8 text-zinc-700 text-[10px] font-mono">
-              {/* <span>TCP_CONNECTED</span> */}
-              <span>AI ROBO</span>
-            </div>
-          </div>
-        </section>
-
-        {/* STRATEGY & IMPACT (EXECUTIVE SUMMARY) */}
-        {/* <div className="section-divider"></div>
-        <section id="about" className="py-32 px-6 md:px-24 relative overflow-hidden">
-          <div className="grid md:grid-cols-12 gap-16 items-start relative z-10">
-            <div className="md:col-span-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 mb-8 border border-cyan-500/20 rounded-md bg-cyan-500/5 text-cyan-500/80 text-[10px] font-bold tracking-[0.3em] uppercase">
-                Strategy & Impact
-              </div>
-              <p className="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-white mb-8">
-                Solving for <span className="text-zinc-600 font-light italic">complexity, </span> <br />
-                building for <span className="cyber-gradient-text">scale.</span>
-              </p>
-            </div>
-            <div className="md:col-span-8 space-y-10">
-              <p className="text-xl text-zinc-500 leading-relaxed max-w-3xl font-light">
-                <p className="text-2xl md:text-2xl font-bold leading-tight tracking-tight text-white mb-4">Hi, I’m Abhishek Yadav,</p> a passionate Full Stack Web Developer dedicated to creating extraordinary visual and functional web experiences. I love transforming ideas into modern, responsive, and scalable applications using technologies like React/Next.js, Node.js/Django, Express, and MongoDB. I focus on writing clean, efficient code and crafting intuitive user interfaces that deliver seamless performance across all devices. As a fresher, I’m constantly learning and exploring the latest trends in web development, cloud deployment, and AI integration to stay ahead of the curve. My goal is to build impactful digital products that combine creativity, functionality, and innovation — turning imagination into reality through code.
-
-                My journey began with a passion for problem-solving through code. Today, I work with modern technologies and frameworks to build applications that exceed expectations and drive business growth.
-
-                I specialize in designing and implementing high-throughput backend services and AI-driven platforms that operate under intense load. My approach combines <strong>rigorous system design principles</strong> with a <strong>bias for action</strong>, ensuring that technical choices directly translate to measurable business outcomes.
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-12 pt-12 border-t border-white/5">
-                {/* Stat Cards with 3D Entrance */}
-                {/* {[
-                  { label: "Throughput", val: "100k+", unit: "RPS" },
-                  { label: "Availability", val: "99.999", unit: "%" },
-                  { label: "Efficiency", val: "40", unit: "% Cost Red" },
-                  { label: "Latency", val: "8ms", unit: "p99" }
-                ].map((stat, i) => (
-                  <motion.div
-                    key={i}
-                    className="group"
-                    initial={{ opacity: 0, rotateY: -20, translateZ: -50 }}
-                    whileInView={{ opacity: 1, rotateY: 0, translateZ: 0 }}
-                    transition={{ delay: i * 0.1, duration: 0.8 }}
-                    viewport={{ once: true }}
-                    style={{ transformStyle: "preserve-3d" }}
-                  >
-                    <div className="text-4xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors pointer-events-none" style={{ transform: "translateZ(20px)" }}>
-                      {stat.val}<span className="text-cyan-600 text-sm ml-1">{stat.unit}</span>
-                    </div>
-                    <div className="text-[10px] text-zinc-600 font-mono uppercase tracking-[0.2em]">{stat.label}</div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <div className="pt-8">
-                <TiltCard>
-                  <LiveDiagnostics />
-                </TiltCard>
-              </div>
-            </div>
-          </div>
-        </section> */} 
-
-        {/* STRATEGY & IMPACT (EXECUTIVE SUMMARY) */}
-        <div className="section-divider"></div>
-
-        <section
-          id="about"
-          className="py-30 px-6 md:px-24 relative overflow-hidden"
-        >
-          <div className="grid md:grid-cols-12 gap-16 items-start relative z-10">
-
-            {/* ───────────────── TOP CENTER HEADING ───────────────── */}
-            <div className="md:col-span-12 text-center space-y-6">
-              <div className="inline-flex items-center justify-center gap-2 px-3 py-1 border border-cyan-500/20 rounded-md bg-cyan-500/5 text-cyan-500/80 text-[10px] font-bold tracking-[0.3em] uppercase mx-auto">
-                Strategy & Impact
-              </div>
-
-              <h2 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-white">
-                Solving for{" "}
-                <span className="text-zinc-600 font-light italic">complexity,</span>
-                <br />
-                building for <span className="cyber-gradient-text">scale.</span>
-              </h2>
-            </div>
-
-            {/* ───────────────── MIDDLE LEFT – INTRODUCTION ───────────────── */}
-            <div className="md:col-span-5 space-y-8 mt-20">
-              <div className="space-y-6 text-zinc-500 text-lg leading-relaxed font-light">
-                <p className="text-4xl font-bold text-white">
-                  About <span className="cyber-gradient-text">Me</span>
-                </p>
-         
-                <p className="text-2xl ">
-                  Hi, I’m <strong>Abhishek Yadav</strong>, a passionate <strong>Full Stack Developer</strong> focused on crafting modern, responsive, and scalable digital experiences. I work with <strong>React/Next.js, Node.js/Django, Express, and MongoDB/My SQL</strong> to transform ideas into production-ready applications.
-                  <br />
-                  As a <strong>Developer</strong>, I continuously explore emerging trends in <strong>System architecture, cloud deployment, and AI integration</strong> to build systems that are both visually compelling and technically resilient.
-                </p>
-                <p className="text-2xl">
-                  I specialize in designing high-throughput backend services and
-                  AI-driven platforms using <strong>system design principles</strong>{" "}
-                  and a <strong>bias for execution</strong>, ensuring technology choices
-                  translate directly into measurable business impact.
-                </p>
-              </div>
-            </div>
-
-            {/* ───────────────── MIDDLE RIGHT – VISUAL ───────────────── */}
-            {/* <div className="md:col-span-7 mt-20">
-              <TiltCard>
-                <LiveDiagnostics />
-              </TiltCard>
-            </div> */}
-
-            {/* ───────────────── BOTTOM CENTER – STATS ───────────────── */}
-            <div className="md:col-span-8 flex justify-center pt-28">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-14">
-                {[
-                  // { label: "Throughput", val: "100k+", unit: "RPS" },
-                  // { label: "Availability", val: "99.999", unit: "%" },
-                  // { label: "Efficiency", val: "40", unit: "% Cost Red" },
-                  // { label: "Latency", val: "8ms", unit: "p99" }
-                  { label: "Leetcode", val: "100", unit: "+" },
-                  { label: "Accuracy", val: "5.99", unit: "%" },
-                  { label: "Projects", val: "5", unit: "+" },
-                  { label: "System Design", val: "-", unit: "" }
-                ].map((stat, i) => (
-                  <motion.div
-                    key={i}
-                    className="group text-center"
-                    initial={{ opacity: 0, rotateY: -20, translateZ: -50 }}
-                    whileInView={{ opacity: 1, rotateY: 0, translateZ: 0 }}
-                    transition={{ delay: i * 0.1, duration: 0.8 }}
-                    viewport={{ once: true }}
-                    style={{ transformStyle: "preserve-3d" }}
-                  >
-                    <div
-                      className="text-4xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors"
-                      style={{ transform: "translateZ(20px)" }}
-                    >
-                      {stat.val}
-                      <span className="text-cyan-600 text-sm ml-1">
-                        {stat.unit}
-                      </span>
-                    </div>
-                    <div className="text-[10px] text-zinc-600 font-mono uppercase tracking-[0.2em]">
-                      {stat.label}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-
-        {/* TECHNICAL ARSENAL */}
-        <div className="section-divider"></div>
-        <section id="skills" className="py-32 px-6 md:px-24 bg-white/[0.02]">
-          <div className="inline-flex items-center gap-2 px-3 py-1 mb-16 border border-white/10 rounded-md bg-white/5 text-zinc-500 text-[10px] font-bold tracking-[0.3em] uppercase">
-            Technical Arsenal
-          </div>
-          <div className="grid md:grid-cols-3 gap-y-20 gap-x-16">
-
-            <TiltCard className="space-y-8 group">
-              <div className="flex items-center gap-4 text-white font-bold tracking-tight text-3xl uppercase">
-                <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 group-hover:bg-cyan-500/20 transition-all">
-                  <Terminal className="text-cyan-500" size={20} />
-                </div>
-                Programming Languages
-              </div>
-              <div className="flex flex-wrap gap-3">
-                {["Python","Javascript","TypeScript", "Java","C++",].map(s => (
-                  <span key={s} className="px-4 py-2 bg-zinc-900/50 border border-white/5 text-zinc-500 font-mono text-xs hover:border-cyan-500/30 hover:text-cyan-400 transition-all cursor-crosshair">{s}</span>
-                ))}
-              </div>
-            </TiltCard>
-
-            <TiltCard className="space-y-8 group">
-              <div className="flex items-center gap-4 text-white font-bold tracking-tight text-3xl uppercase">
-                <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 group-hover:bg-cyan-500/20 transition-all">
-                  <Server className="text-cyan-500" size={20} />
-                </div>
-                Frontend & Backend 
-              </div>
-              <div className="flex flex-wrap gap-3">
-                {["HTML", "CSS", "React.js/vite", "Next.js", "Tailwind CSS/Bootstrap", "Express.js/Node.js", "RESTful APIs", "WebSockets/WebRTC", "Django/FastAPI"].map(s => (
-                  <span key={s} className="px-4 py-2 bg-zinc-900/50 border border-white/5 text-zinc-500 font-mono text-xs hover:border-cyan-500/30 hover:text-cyan-400 transition-all cursor-crosshair">{s}</span>
-                ))}
-              </div>
-            </TiltCard>
-
-            <TiltCard className="space-y-8 group">
-              <div className="flex items-center gap-4 text-white font-bold tracking-tight text-3xl uppercase">
-                <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 group-hover:bg-cyan-500/20 transition-all">
-                  <Server className="text-cyan-500" size={20} />
-                </div>
-                Cloud & Infra
-              </div>
-              <div className="flex flex-wrap gap-3">
-                {["Git/GitHub", "AWS (Basic)", "Terraform", "Kubernetes", "Docker", "GCP", "CI/CD"].map(s => (
-                  <span key={s} className="px-4 py-2 bg-zinc-900/50 border border-white/5 text-zinc-500 font-mono text-xs hover:border-cyan-500/30 hover:text-cyan-400 transition-all cursor-crosshair">{s}</span>
-                ))}
-              </div>
-            </TiltCard>
-
-            <TiltCard className="space-y-8 group">
-              <div className="flex items-center gap-4 text-white font-bold tracking-tight text-3xl uppercase">
-                <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 group-hover:bg-cyan-500/20 transition-all">
-                  <Database className="text-cyan-500" size={20} />
-                </div>
-                Data & Messaging
-              </div>
-              <div className="flex flex-wrap gap-3">
-                {["My SQL", "MongoDB", "PostgreSQL", "Redis", "Kafka", "Cassandra",].map(s => (
-                  <span key={s} className="px-4 py-2 bg-zinc-900/50 border border-white/5 text-zinc-500 font-mono text-xs hover:border-cyan-500/30 hover:text-cyan-400 transition-all cursor-crosshair">{s}</span>
-                ))}
-              </div>
-            </TiltCard>
-
-            <TiltCard className="space-y-8 group">
-              <div className="flex items-center gap-4 text-white font-bold tracking-tight text-3xl uppercase">
-                <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 group-hover:bg-cyan-500/20 transition-all">
-                  <Terminal className="text-cyan-500" size={20} />
-                </div>
-                AI & Intelligence
-              </div>
-              <div className="flex flex-wrap gap-3">
-                 {["TensorFlow", "PyTorch", "LangChain", "LangGraph", "OpenAI API", "HuggingFace", "Transformers", "NLP", "RAG", "n8n Workflow Automation"].map(s => (
-                  <span key={s} className="px-4 py-2 bg-zinc-900/50 border border-white/5 text-zinc-500 font-mono text-xs hover:border-cyan-500/30 hover:text-cyan-400 transition-all cursor-crosshair">{s}</span>
-                ))}
-              </div>
-            </TiltCard>
-
-            <TiltCard className="space-y-6 group">
-              <div className="flex items-center gap-3 text-white font-bold tracking-tighter text-2xl uppercase">
-                <Layers className="text-cyan-500" size={24} /> Systems Thinking
-              </div>
-               <div className="flex flex-wrap gap-3">
-                {[ "Load Balancing", "Distributed Systems", "Event-Driven Arch", "Microservices", "SLOs/SLIs"].map(s => (
-                  <span key={s} className="px-4 py-2 bg-zinc-900/50 border border-white/5 text-zinc-500 font-mono text-xs hover:border-cyan-500/30 hover:text-cyan-400 transition-all cursor-crosshair">{s}</span>
-                ))}
-              </div>
-            </TiltCard>
-
-            <TiltCard className="space-y-6 group">
-              <div className="flex items-center gap-3 text-white font-bold tracking-tighter text-2xl uppercase">
-                <Shield className="text-cyan-500" size={24} /> Security & Tooling
-              </div>
-              <div className="flex flex-wrap gap-3">
-                {[ "OAuth2", "JWT", "Linux", "Protobuf", "Git", "Prometheus", "Grafana", ].map(s => (
-                  <span key={s} className="px-4 py-2 bg-zinc-900/50 border border-white/5 text-zinc-500 font-mono text-xs hover:border-cyan-500/30 hover:text-cyan-400 transition-all cursor-crosshair">{s}</span>
-                ))}
-              </div>
-            </TiltCard>
-
-          </div>
-        </section>
-
-        {/* FLAGSHIP PROJECTS */}
-        {/* <section id="projects" className="py-32 px-6 md:px-24">
-          <h2 className="text-[12rem] font-black text-white/5 absolute -left-10 select-none pointer-events-none">PROJECTS</h2>
-          <div className="relative z-10 flex flex-col gap-40">
-
-            {PROJECTS.map((project, idx) => (
-              <div key={project.id} className="grid md:grid-cols-2 gap-20 items-center">
-                <motion.div
-                  initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
-                  viewport={{ once: true }}
-                  className={`${idx % 2 !== 0 ? 'md:order-2' : ''} space-y-8`}
-                >
-                  <div className={`inline-flex items-center gap-2 px-3 py-1 mb-6 border rounded-full text-[10px] font-bold tracking-widest uppercase ${idx % 2 !== 0 ? 'border-purple-500/20 bg-purple-500/5 text-purple-400' : 'border-cyan-500/20 bg-cyan-500/5 text-cyan-400'}`}>
-                    <div className={`w-1.5 h-1.5 rounded-full ${idx % 2 !== 0 ? 'bg-purple-500' : 'bg-cyan-500'}`}></div>
-                    {project.category}
-                  </div>
-                  <h3 className="text-5xl font-bold tracking-tighter">{project.title}</h3>
-
-                  <div className="space-y-6">
-                    <p className="text-zinc-400 text-lg leading-relaxed">
-                      <strong>The Problem:</strong> {project.problem.split(':')[1] || project.problem}
-                    </p>
-                    <p className="text-zinc-400 text-lg leading-relaxed">
-                      <strong>The Solution:</strong> {project.solution.split(':')[1] || project.solution}
-                    </p>
-=======
-          {/* Agents */}
+          {/* Agents grid */}
           <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-3 md:pl-8">
             {agents.map((agent, i) => {
               const Icon = agent.Icon;
@@ -905,13 +382,12 @@ function AgentOrchestrationDiagram() {
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ delay: 0.3 + i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                   className="relative group">
-                  {/* Connector (desktop) */}
+                  {/* Animated connector line (desktop) */}
                   <div className="hidden md:block absolute -left-8 top-1/2 w-8 h-px" style={{ background: `linear-gradient(90deg, rgba(167,139,250,0.3), ${agent.color}50)` }}>
                     <motion.div className="absolute top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full"
                       style={{ background: agent.color, boxShadow: `0 0 6px ${agent.color}` }}
                       animate={{ left: ['0%', '100%'] }}
                       transition={{ duration: 1.2 + i * 0.2, delay: i * 0.3, repeat: Infinity, ease: 'linear' }} />
->>>>>>> 7785240 (Update Portfolio)
                   </div>
 
                   <div className="rounded-xl border p-3 text-center transition-all duration-300 group-hover:scale-105 cursor-default"
@@ -919,24 +395,6 @@ function AgentOrchestrationDiagram() {
                     <div className="w-8 h-8 rounded-lg mx-auto mb-2 flex items-center justify-center" style={{ background: `${agent.color}15`, border: `1px solid ${agent.color}30` }}>
                       <Icon size={15} style={{ color: agent.color }} />
                     </div>
-<<<<<<< HEAD
-                    <div>
-                      <h4 className="text-white text-xs font-bold mb-2 uppercase">Core Tech</h4>
-                      <ul className="text-zinc-500 text-[11px] font-mono space-y-1">
-                        {project.tech.slice(0, 3).map((t, i) => <li key={i}>- {t}</li>)}
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-8 items-center pt-4">
-                    <button
-                      onClick={() => setSelectedProject(project)}
-                      className={`flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-xs tracking-widest transition-all ${idx % 2 !== 0 ? 'bg-purple-500 hover:bg-purple-400 text-black' : 'bg-cyan-500 hover:bg-cyan-400 text-black'} uppercase shadow-lg shadow-cyan-500/20`}
-                    >
-                      View Architecture <Info size={16} />
-                    </button>
-                    <a href="#" className="flex items-center gap-2 text-zinc-500 font-bold text-sm tracking-widest hover:text-white transition-all uppercase">Source Code</a>
-=======
                     <div className="text-white text-[10px] font-bold">{agent.label}</div>
                     <div className="text-[9px] font-mono mt-0.5" style={{ color: agent.color + '65' }}>{agent.desc}</div>
                     <motion.div className="mt-2 text-[8px] font-mono flex items-center justify-center gap-1"
@@ -945,7 +403,6 @@ function AgentOrchestrationDiagram() {
                       style={{ color: agent.color }}>
                       <Code2 size={7} /> tool_call
                     </motion.div>
->>>>>>> 7785240 (Update Portfolio)
                   </div>
                 </motion.div>
               );
@@ -965,7 +422,7 @@ function AgentOrchestrationDiagram() {
 }
 
 // ═══════════════════════════════════════════════════════
-// MAIN
+// MAIN PAGE
 // ═══════════════════════════════════════════════════════
 export default function Home() {
   const [selectedProject, setSelectedProject] = useState<typeof PROJECTS[0] | null>(null);
@@ -973,6 +430,7 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
+  // All hooks at top level ─────────────────────────────
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
   const mxSpring = useSpring(0, { stiffness: 45, damping: 18 });
@@ -1041,7 +499,7 @@ export default function Home() {
       <div className="fixed pointer-events-none z-[90] w-72 h-72 rounded-full transition-[left,top] duration-75"
         style={{ left: mousePos.x - 144, top: mousePos.y - 144, background: 'radial-gradient(circle,rgba(34,211,238,0.055) 0%,transparent 70%)' }} />
 
-      {/* Scroll bar */}
+      {/* Scroll progress bar */}
       <motion.div style={{ scaleX, transformOrigin: '0%' }} className="fixed top-0 left-0 right-0 h-[2px] z-[80] grad-border" />
 
       {/* Mobile menu */}
@@ -1064,9 +522,10 @@ export default function Home() {
       </AnimatePresence>
 
       <main className="min-h-screen relative bg-[#050507] text-zinc-100 overflow-x-hidden selection:bg-cyan-900/50">
+        {/* Mesh gradient background */}
         <div className="fixed inset-0 pointer-events-none mesh-gradient z-0 opacity-60" />
 
-        {/* ═══ NAV ═══ */}
+        {/* ════════════════ NAV ════════════════ */}
         <nav className="fixed w-full top-0 z-[60] px-5 md:px-10 py-4 pointer-events-none">
           <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-[1400px] mx-auto flex justify-between items-center backdrop-blur-2xl border border-white/[0.06] rounded-2xl bg-zinc-950/70 px-5 py-3 pointer-events-auto shadow-[0_4px_60px_rgba(0,0,0,0.5)]">
@@ -1098,7 +557,7 @@ export default function Home() {
           </motion.div>
         </nav>
 
-        {/* ═══ HERO ═══ */}
+        {/* ════════════════ HERO ════════════════ */}
         <section className="relative h-screen grid lg:grid-cols-[52%_48%] items-center px-6 md:px-12 lg:px-24 overflow-hidden section-scanline">
           <div className="absolute inset-0 pointer-events-none" style={{
             backgroundImage: `linear-gradient(rgba(34,211,238,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.04) 1px, transparent 1px)`,
@@ -1109,18 +568,21 @@ export default function Home() {
           <div className="absolute right-0 top-1/4 w-[300px] h-[300px] rounded-full blur-[120px] bg-violet-500/[0.05] pointer-events-none" />
 
           <div className="z-30 flex flex-col justify-center min-h-[60vh] relative">
+            {/* Status badge */}
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="flex items-center mb-8">
               <span className="flex items-center gap-2 px-4 py-1.5 border border-emerald-500/25 rounded-full bg-emerald-500/[0.06] text-emerald-400 text-[10px] font-black tracking-widest uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />Open to AI Engineer Roles · Remote / India
               </span>
             </motion.div>
 
+            {/* Name with glitch */}
             <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col leading-[0.88] font-black tracking-tighter">
               <span className="text-5xl md:text-6xl text-zinc-600 font-light">Hi, I'm</span>
               <span className="glitch-wrap text-[5rem] md:text-[7rem] text-white leading-[0.85]" data-text="Abhishek">Abhishek</span>
             </motion.div>
 
+            {/* Typewriter role */}
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="flex items-center gap-3 mt-4 flex-wrap">
               <span className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400 min-w-[200px]">{typeText}</span>
               <span className="blink w-0.5 h-6 bg-cyan-400 rounded-sm flex-shrink-0" />
@@ -1128,15 +590,18 @@ export default function Home() {
               <span className="text-zinc-500 text-lg hidden md:block font-light">Full-Stack Dev</span>
             </motion.div>
 
+            {/* Animated divider */}
             <motion.div initial={{ width: 0, opacity: 0 }} animate={{ width: 80, opacity: 1 }} transition={{ delay: 0.6, duration: 0.7 }}
               className="h-px bg-gradient-to-r from-cyan-500 via-violet-500 to-transparent mt-6 mb-6" />
 
+            {/* Tagline */}
             <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65 }}
               className="text-base md:text-[17px] text-zinc-500 max-w-md leading-relaxed">
               Building <span className="text-zinc-200 font-semibold">production AI systems</span> — RAG pipelines, agentic workflows & LLM-powered apps.{' '}
               <span className="text-cyan-400 font-semibold">Live on HuggingFace.</span>
             </motion.p>
 
+            {/* Tech chips stagger */}
             <motion.div initial="hidden" animate="show" variants={stagger(0.055)} className="flex flex-wrap gap-2 mt-6">
               {['RAG', 'Agentic AI', 'MCP', 'Claude API', 'LangGraph', 'ChromaDB'].map((tag) => (
                 <motion.span key={tag}
@@ -1146,6 +611,7 @@ export default function Home() {
               ))}
             </motion.div>
 
+            {/* Magnetic CTAs */}
             <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="flex flex-wrap gap-4 mt-10">
               <motion.a ref={mag1ref} href="#projects" style={{ x: mag1x, y: mag1y }}
                 onMouseMove={handleMag(mag1x, mag1y, mag1ref)} onMouseLeave={resetMag(mag1x, mag1y)}
@@ -1160,6 +626,7 @@ export default function Home() {
               </motion.a>
             </motion.div>
 
+            {/* Count-up stats */}
             <motion.div initial="hidden" animate="show" variants={stagger(0.1)} transition={{ delayChildren: 1.0 }}
               className="flex gap-10 mt-10 pt-8 border-t border-white/[0.05]">
               {[{ val: '6', unit: '×', label: 'Internships' }, { val: '11', unit: '✓', label: 'Anthropic Certs' }, { val: '2+', unit: '⬆', label: 'Live AI Projects' }].map((s) => (
@@ -1168,12 +635,14 @@ export default function Home() {
             </motion.div>
           </div>
 
+          {/* 3D Hero right — mouse-parallax */}
           <div className="hidden lg:flex h-full items-center justify-center p-10 relative z-20 pointer-events-none" style={{ perspective: '1200px' }}>
             <motion.div style={{ rotateX: mySpring, rotateY: mxSpring, transformStyle: 'preserve-3d' }} className="w-full h-full flex items-center justify-center float">
               <div className="w-full h-[90vh]" style={{ transform: 'translateZ(50px)' }}><Hero3D /></div>
             </motion.div>
           </div>
 
+          {/* Bottom bar */}
           <div className="absolute bottom-8 left-6 md:left-24 right-6 md:right-24 flex justify-between items-end z-40">
             <motion.span initial={{ opacity: 0 }} animate={{ opacity: 0.2 }} transition={{ delay: 2 }}
               className="text-[9px] font-mono text-zinc-700 rotate-90 origin-left translate-y-[-18px]">26.4499°N · 80.3319°E · KANPUR</motion.span>
@@ -1186,7 +655,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ═══ ABOUT ═══ */}
+        {/* ════════════════ ABOUT ════════════════ */}
         <div className="section-divider" />
         <ScrollRevealSection id="about" className="py-32 px-6 md:px-24 relative overflow-hidden section-scanline">
           <div className="absolute right-0 top-0 w-96 h-96 rounded-full blur-[110px] bg-violet-500/[0.04] pointer-events-none" />
@@ -1227,7 +696,7 @@ export default function Home() {
           </div>
         </ScrollRevealSection>
 
-        {/* ═══ PROJECTS ═══ */}
+        {/* ════════════════ PROJECTS ════════════════ */}
         <div className="section-divider" />
         <ScrollRevealSection id="projects" className="py-32 px-6 md:px-24 relative section-scanline">
           <span className="absolute -left-4 top-20 text-[8rem] md:text-[12rem] font-black text-white/[0.025] select-none pointer-events-none leading-none uppercase tracking-tighter">PROJECTS</span>
@@ -1239,6 +708,7 @@ export default function Home() {
                 const Icon = project.Icon;
                 return (
                   <div key={project.id} className="grid md:grid-cols-2 gap-16 items-center">
+                    {/* Text */}
                     <motion.div initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }} whileInView={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }}
                       className={`${idx % 2 !== 0 ? 'md:order-2' : ''} space-y-7`}>
@@ -1295,15 +765,18 @@ export default function Home() {
                       </div>
                     </motion.div>
 
+                    {/* Visual card */}
                     <motion.div initial={{ opacity: 0, scale: 0.93, rotateY: idx % 2 === 0 ? 6 : -6 }}
                       whileInView={{ opacity: 1, scale: 1, rotateY: 0 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                       viewport={{ once: true }} className={idx % 2 !== 0 ? 'md:order-1' : ''}>
                       <TiltCard className="aspect-square bg-zinc-900/60 border border-white/[0.05] rounded-2xl flex items-center justify-center p-12 group relative overflow-hidden llamaindex-card">
                         <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${isCyan ? 'bg-gradient-to-br from-cyan-950/50' : 'bg-gradient-to-br from-violet-950/50'} to-transparent`} />
+                        {/* Animated grid on hover */}
                         <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-500" style={{
                           backgroundImage: `linear-gradient(${isCyan ? 'rgba(34,211,238,0.08)' : 'rgba(167,139,250,0.08)'} 1px, transparent 1px), linear-gradient(90deg, ${isCyan ? 'rgba(34,211,238,0.08)' : 'rgba(167,139,250,0.08)'} 1px, transparent 1px)`,
                           backgroundSize: '30px 30px',
                         }} />
+                        {/* Corner accents */}
                         <div className={`absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 opacity-0 group-hover:opacity-40 transition-opacity ${isCyan ? 'border-cyan-500' : 'border-violet-500'}`} />
                         <div className={`absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 opacity-0 group-hover:opacity-40 transition-opacity ${isCyan ? 'border-cyan-500' : 'border-violet-500'}`} />
                         <div className="flex flex-col items-center gap-8 relative z-10 text-center">
@@ -1331,7 +804,7 @@ export default function Home() {
           </div>
         </ScrollRevealSection>
 
-        {/* ═══ AI ARCHITECTURE (NEW) ═══ */}
+        {/* ════════════════ AI ARCHITECTURE ════════════════ */}
         <div className="section-divider" />
         <ScrollRevealSection id="architecture" className="py-32 px-6 md:px-24 relative section-scanline">
           <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 50%, rgba(34,211,238,0.025) 0%, transparent 70%)' }} />
@@ -1387,15 +860,20 @@ export default function Home() {
           </div>
         </ScrollRevealSection>
 
-        {/* ═══ SKILLS ═══ */}
+        {/* ════════════════ SKILLS ════════════════ */}
         <div className="section-divider" />
         <ScrollRevealSection id="skills" className="py-32 px-6 md:px-24 relative section-scanline">
           <div className="relative z-10">
             <SectionTag>// 04 — Technical Arsenal</SectionTag>
+
+            {/* AI Stack primary card */}
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }} className="mb-8">
               <div className="relative rounded-2xl overflow-hidden border border-cyan-500/20 bg-gradient-to-br from-cyan-950/20 via-zinc-900/30 to-zinc-900/20 llamaindex-card">
-                <div className="absolute inset-0 opacity-20" style={{ backgroundImage: `linear-gradient(rgba(34,211,238,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.06) 1px, transparent 1px)`, backgroundSize: '40px 40px' }} />
+                <div className="absolute inset-0 opacity-20" style={{
+                  backgroundImage: `linear-gradient(rgba(34,211,238,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.06) 1px, transparent 1px)`,
+                  backgroundSize: '40px 40px',
+                }} />
                 <div className="relative z-10 p-8 space-y-6">
                   <div className="flex items-center justify-between flex-wrap gap-4">
                     <div className="flex items-center gap-4">
@@ -1411,103 +889,6 @@ export default function Home() {
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />PRIMARY EXPERTISE
                     </span>
                   </div>
-<<<<<<< HEAD
-                </TiltCard>
-              </div>
-            ))}
-
-          </div>
-        </section> */}
-
-        {/* SYSTEM DESIGN THINKING */}
-        <section id="systems" className="py-32 px-6 md:px-24 bg-zinc-950 relative border-t border-white/5">
-          <h2 className="text-sm font-mono text-cyan-500 mb-16 uppercase tracking-[0.3em]">Design Principles at Scale</h2>
-          <div className="grid md:grid-cols-3 gap-1px bg-white/10 border border-white/10">
-
-            <TiltCard className="bg-zinc-950 p-12 space-y-6 group hover:bg-zinc-900 transition-all">
-              <h3 className="text-2xl font-bold tracking-tighter">API First & Performance</h3>
-              <p className="text-zinc-500 leading-relaxed text-sm">
-                Favoring gRPC/Protobuf for internal service communication to minimize payload size and serialization overhead. Implementing strictly versioned REST APIs for external consumers with comprehensive OpenAPI documentation.
-              </p>
-              <ul className="text-[10px] font-mono text-cyan-500 space-y-1">
-                <li>- Throttling & Rate Limiting</li>
-                <li>- Payload Compression</li>
-                <li>- Circuit Breaker Pattern</li>
-              </ul>
-            </TiltCard>
-
-            <TiltCard className="bg-zinc-950 p-12 space-y-6 group hover:bg-zinc-900 transition-all">
-              <h3 className="text-2xl font-bold tracking-tighter">Observability & Resilience</h3>
-              <p className="text-zinc-500 leading-relaxed text-sm">
-                "If it's not monitored, it doesn't exist". Leveraging OpenTelemetry for distributed tracing to debug p99 latency spikes across microservices. Designing for failure using Bulkheads and Graceful Degradation.
-              </p>
-              <ul className="text-[10px] font-mono text-cyan-500 space-y-1">
-                <li>- RED/USE Metrics Tracking</li>
-                <li>- Chaos Engineering Tests</li>
-                <li>- Automated Rollback Logic</li>
-              </ul>
-            </TiltCard>
-
-            <TiltCard className="bg-zinc-950 p-12 space-y-6 group hover:bg-zinc-900 transition-all">
-              <h3 className="text-2xl font-bold tracking-tighter">Data Strategy & Cost</h3>
-              <p className="text-zinc-500 leading-relaxed text-sm">
-                Choosing the right tool for the job: Cassandra for heavy writes, PostgreSQL for structured relational needs, and Redis for volatile low-latency data. Optimizing cloud spend through intelligent caching and workload containerization.
-              </p>
-              <ul className="text-[10px] font-mono text-cyan-500 space-y-1">
-                <li>- Multi-region Replication</li>
-                <li>- Semantic Caching Layers</li>
-                <li>- FinOps Cost Optimization</li>
-              </ul>
-            </TiltCard>
-
-          </div>
-
-          <div className="mt-20">
-            <ArchitectureDiagram />
-          </div>
-        </section>
-
-        {/* ENGINEERING VALUES (FAANG FIT) */}
-        <section className="py-32 px-6 md:px-24 bg-zinc-950">
-          <h2 className="text-sm font-mono text-cyan-500 mb-16 uppercase tracking-[0.3em]">Engineering Values</h2>
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="space-y-4">
-              <h4 className="text-white font-bold text-xl">Ownership & Bias for Action</h4>
-              <p className="text-zinc-500 text-sm leading-relaxed">
-                I don't just write code; I own the lifecycle. From discovery and design to deployment and post-launch observability. I thrive in ambiguity and move fast to validate hypotheses while maintaining high quality bars.
-              </p>
-            </div>
-            <div className="space-y-4">
-              <h4 className="text-white font-bold text-xl">Data-Driven Decisions</h4>
-              <p className="text-zinc-500 text-sm leading-relaxed">
-                Architectural choices should be rooted in evidence. I utilize load testing (k6), profiling, and metrics to justify technology transitions or performance optimizations.
-              </p>
-            </div>
-            <div className="space-y-4">
-              <h4 className="text-white font-bold text-xl">Security & Privacy First</h4>
-              <p className="text-zinc-500 text-sm leading-relaxed">
-                In a cloud-native world, security isn't an afterthought. I implement Zero Trust principles, rigorous IAM policies, and encryption at rest/transit by default.
-              </p>
-            </div>
-            <div className="space-y-4">
-              <h4 className="text-white font-bold text-xl">Customer Obsession</h4>
-              <p className="text-zinc-500 text-sm leading-relaxed">
-                Engineering exists to solve user problems. I work closely with product and design to ensure technical constraints never overshadow user experience.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* EXPERIENCE (STAR FORMAT) */}
-        {/* <section className="py-32 px-6 md:px-24 bg-zinc-900/10 border-t border-white/5">
-          <h2 className="text-sm font-mono text-cyan-500 mb-16 uppercase tracking-[0.3em]">Professional Trajectory</h2>
-          <div className="space-y-24">
-            <div className="max-w-4xl">
-              <div className="flex justify-between items-end mb-6">
-                <div>
-                  <h3 className="text-2xl font-bold">Senior Product Engineer</h3>
-                  <p className="text-zinc-500 font-mono text-xs uppercase">High-Growth Platform Team // Tech Corp</p>
-=======
                   <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger(0.04)} className="flex flex-wrap gap-2.5">
                     {AI_STACK.map((s) => (
                       <motion.span key={s}
@@ -1518,10 +899,11 @@ export default function Home() {
                       </motion.span>
                     ))}
                   </motion.div>
->>>>>>> 7785240 (Update Portfolio)
                 </div>
               </div>
             </motion.div>
+
+            {/* Other skill groups */}
             <div className="grid md:grid-cols-3 gap-5">
               {SKILL_GROUPS.map((group, idx) => {
                 const Icon = group.Icon;
@@ -1548,13 +930,15 @@ export default function Home() {
           </div>
         </ScrollRevealSection>
 
-        {/* ═══ EXPERIENCE + CERTS ═══ */}
+        {/* ════════════════ EXPERIENCE + CERTS ════════════════ */}
         <div className="section-divider" />
         <ScrollRevealSection id="experience" className="py-32 px-6 md:px-24 relative section-scanline">
           <div className="absolute left-0 top-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
           <div className="relative z-10">
             <SectionTag>// 05 — Experience & Certifications</SectionTag>
             <div className="grid md:grid-cols-2 gap-20">
+
+              {/* Timeline */}
               <div>
                 <motion.h2 initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                   transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -1564,6 +948,7 @@ export default function Home() {
                 <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.15 }} viewport={{ once: true }}
                   className="text-zinc-500 mb-12 leading-relaxed">Security research → full-stack dev → AI engineering. Each role built the stack.</motion.p>
                 <div className="relative">
+                  {/* Animated timeline line */}
                   <motion.div initial={{ scaleY: 0 }} whileInView={{ scaleY: 1 }} transition={{ duration: 1.2, ease: 'easeInOut' }} viewport={{ once: true }} style={{ originY: 0 }}
                     className="absolute left-3 top-2 bottom-2 w-px bg-gradient-to-b from-cyan-500/60 via-cyan-500/20 to-transparent" />
                   <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger(0.09)} className="space-y-4 pl-10">
@@ -1588,6 +973,7 @@ export default function Home() {
                 </div>
               </div>
 
+              {/* Certifications */}
               <div>
                 <motion.h2 initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                   transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -1612,6 +998,8 @@ export default function Home() {
                     </motion.div>
                   ))}
                 </motion.div>
+
+                {/* Verified badge */}
                 <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} viewport={{ once: true }}
                   className="mt-8 p-5 border border-cyan-500/15 rounded-xl bg-gradient-to-r from-cyan-950/25 to-transparent flex items-center gap-4">
                   <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 flex-shrink-0 node-pulse">
@@ -1628,32 +1016,15 @@ export default function Home() {
               </div>
             </div>
           </div>
-<<<<<<< HEAD
-        </section> */}
-
-        {/* OPEN SOURCE & INNOVATION */}
-        <section className="py-32 px-6 md:px-24 bg-zinc-950">
-          <h2 className="text-sm font-mono text-cyan-500 mb-16 uppercase tracking-[0.3em]">Open Source & Research</h2>
-          <div className="grid md:grid-cols-2 gap-16">
-            <div className="glass-panel p-10 rounded-2xl border border-white/5 space-y-6">
-              <h3 className="text-2xl font-bold">Kubernetes Upstream Contribution</h3>
-              <p className="text-zinc-400 text-sm leading-relaxed">
-                Contributed to the **SIG-Scheduling** group, optimizing the kube-scheduler's cache synchronization logic. My PR reduced memory overhead during high-churn pod deployments by **15%**.
-              </p>
-              <div className="flex gap-4">
-                <span className="text-[10px] font-mono text-zinc-500 bg-white/5 px-2 py-1">GENERIC_SCHED_CACHE</span>
-                <span className="text-[10px] font-mono text-zinc-500 bg-white/5 px-2 py-1">GOLANG</span>
-              </div>
-              <a href="https://github.com/CodeBy-Abhishek" className="inline-block pt-4 text-cyan-400 text-xs font-bold font-mono hover:text-cyan-300 transition-colors tracking-widest">VIEW_PR_ON_GITHUB // 0x4F2A</a>
-            </div>
-=======
         </ScrollRevealSection>
->>>>>>> 7785240 (Update Portfolio)
 
-        {/* ═══ CONTACT ═══ */}
+        {/* ════════════════ CONTACT ════════════════ */}
         <div className="section-divider" />
         <ScrollRevealSection id="contact" className="py-32 px-6 md:px-24 bg-zinc-950 relative border-t border-white/[0.04] overflow-hidden section-scanline">
-          <div className="absolute inset-0 opacity-25" style={{ backgroundImage: `linear-gradient(rgba(34,211,238,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.04) 1px, transparent 1px)`, backgroundSize: '60px 60px' }} />
+          <div className="absolute inset-0 opacity-25" style={{
+            backgroundImage: `linear-gradient(rgba(34,211,238,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.04) 1px, transparent 1px)`,
+            backgroundSize: '60px 60px',
+          }} />
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full blur-[130px] bg-cyan-500/[0.04] pointer-events-none" />
           <div className="relative z-10 grid md:grid-cols-2 gap-20 items-center">
             <div className="space-y-8">
@@ -1668,9 +1039,9 @@ export default function Home() {
               </motion.p>
               <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger(0.1)} className="flex flex-col gap-4">
                 {[
-                  { Icon: Mail, label: 'abhishek977266@gmail.com', href: 'mailto:abhishek977266@gmail.com' },
+                  { Icon: Mail,     label: 'abhishek977266@gmail.com',        href: 'mailto:abhishek977266@gmail.com' },
                   { Icon: Linkedin, label: 'linkedin.com/in/abhishek-yadav72', href: 'https://www.linkedin.com/in/abhishek-yadav72/' },
-                  { Icon: Github, label: 'github.com/CodeBy-Abhishek', href: 'https://github.com/CodeBy-Abhishek' },
+                  { Icon: Github,   label: 'github.com/CodeBy-Abhishek',       href: 'https://github.com/CodeBy-Abhishek' },
                 ].map((link) => (
                   <motion.a key={link.label} variants={fadeUp} href={link.href}
                     target={link.href.startsWith('mailto') ? undefined : '_blank'} rel="noopener noreferrer"
@@ -1688,85 +1059,49 @@ export default function Home() {
               <ContactForm />
             </motion.div>
           </div>
-<<<<<<< HEAD
-        </section>
+        </ScrollRevealSection>
 
-        {/* CONTACT SECTION */}
-        <section id="contact" className="py-32 px-6 md:px-24 bg-zinc-950 relative border-t border-white/5">
-          <div className="grid md:grid-cols-2 gap-20 items-center">
-            <div className="space-y-8">
-              <h2 className="text-sm font-mono text-cyan-500 uppercase tracking-[0.3em]">Direct Communication</h2>
-              <h3 className="text-6xl font-bold tracking-tighter">LET'S BUILD THE <br /> <span className="text-cyan-500">NEXT DIMENSION.</span></h3>
-              <p className="text-zinc-500 text-lg leading-relaxed max-w-md">
-                Available for technical consultations, system architecture reviews, and high-impact engineering leadership roles.
-              </p>
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-4 text-zinc-400 font-mono text-sm group">
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-cyan-500 transition-colors">
-                    <Mail size={18} className="group-hover:text-cyan-400" />
-                  </div>
-                  abhishek977266@gmail.com
-                </div>
-                <div className="flex items-center gap-4 text-zinc-400 font-mono text-sm group">
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-cyan-500 transition-colors">
-                    <MessageSquare size={18} className="group-hover:text-cyan-400" />
-                  </div>
-                  Available for worldwide remote ops
-                </div>
+        {/* ════════════════ FOOTER ════════════════ */}
+        <footer className="py-24 px-6 md:px-24 bg-zinc-950 border-t border-white/[0.04] relative overflow-hidden">
+          <div className="absolute inset-0 opacity-10" style={{
+            backgroundImage: `linear-gradient(rgba(34,211,238,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.06) 1px, transparent 1px)`,
+            backgroundSize: '60px 60px',
+          }} />
+          <div className="relative z-10 flex flex-col items-center text-center">
+            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }}>
+              <TiltCard className="inline-block mb-8 cursor-default">
+                <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-white leading-none">
+                  BUILD WITH <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400">AI.</span>
+                </h2>
+              </TiltCard>
+            </motion.div>
+            <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} viewport={{ once: true }}
+              className="text-zinc-700 font-mono text-xs mb-10 uppercase tracking-[0.25em] max-w-2xl leading-loose">
+              AI Engineer · LLM Engineer · GenAI Developer<br />Remote / Bengaluru / Hyderabad / Noida
+            </motion.p>
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger(0.08)} className="flex justify-center gap-4 mb-14">
+              {[{ href: 'https://github.com/CodeBy-Abhishek', Icon: Github }, { href: 'https://www.linkedin.com/in/abhishek-yadav72/', Icon: Linkedin }, { href: 'mailto:abhishek977266@gmail.com', Icon: Mail }].map((link) => (
+                <motion.a key={link.href} variants={fadeUp} href={link.href}
+                  target={link.href.startsWith('mailto') ? undefined : '_blank'} rel="noopener noreferrer"
+                  whileHover={{ scale: 1.12, y: -4 }} whileTap={{ scale: 0.95 }}
+                  className="p-4 bg-white/[0.03] border border-white/[0.06] rounded-full hover:bg-cyan-500 hover:text-black hover:border-cyan-500 hover:shadow-[0_0_24px_rgba(0,229,255,0.4)] transition-all duration-200">
+                  <link.Icon size={18} />
+                </motion.a>
+              ))}
+            </motion.div>
+            <div className="flex flex-col items-center gap-3 opacity-15 hover:opacity-50 transition-opacity">
+              <div className="text-[9px] font-mono tracking-[0.4em] uppercase text-zinc-600">Built with the modern AI stack</div>
+              <div className="flex flex-wrap justify-center gap-5">
+                {['Next.js 15', 'TypeScript', 'TailwindCSS', 'Framer Motion', 'Three.js', 'Anthropic API'].map((t) => (
+                  <span key={t} className="text-[10px] font-mono text-zinc-700">{t}</span>
+                ))}
               </div>
             </div>
-            <ContactForm />
+            <div className="text-[10px] text-zinc-800 font-mono tracking-[0.2em] uppercase mt-8">
+              Abhishek Yadav · AI Engineer · Kanpur, India · {new Date().getFullYear()}
+            </div>
           </div>
-        </section>
-
-        {/* FOOTER & CTA */}
-        <footer className="py-32 px-6 md:px-24 bg-zinc-950 border-t border-white/5 relative overflow-hidden">
-          {/* Subtle 3D Depth in Footer */}
-          <div className="absolute right-0 top-0 w-full lg:w-1/2 h-full opacity-30 pointer-events-none grayscale brightness-50">
-            <iframe src="https://my.spline.design/interactive-rings-0.1-39656475fb128d5d4d3e/" className="w-full h-full border-none" />
-          </div>
-=======
-        </ScrollRevealSection>
->>>>>>> 7785240 (Update Portfolio)
-
-{/* ═══ FOOTER ═══ */}
-<footer className="py-24 px-6 md:px-24 bg-zinc-950 border-t border-white/[0.04] relative overflow-hidden">
-  <div className="absolute inset-0 opacity-10" style={{ backgroundImage: `linear-gradient(rgba(34,211,238,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.06) 1px, transparent 1px)`, backgroundSize: '60px 60px' }} />
-  <div className="relative z-10 flex flex-col items-center text-center">
-    <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }}>
-      <TiltCard className="inline-block mb-8 cursor-default">
-        <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-white leading-none">
-          BUILD WITH <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400">AI.</span>
-        </h2>
-      </TiltCard>
-    </motion.div>
-    <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} viewport={{ once: true }}
-      className="text-zinc-700 font-mono text-xs mb-10 uppercase tracking-[0.25em] max-w-2xl leading-loose">
-      AI Engineer · LLM Engineer · GenAI Developer<br />Remote / Bengaluru / Hyderabad / Noida
-    </motion.p>
-    <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger(0.08)} className="flex justify-center gap-4 mb-14">
-      {[{ href: 'https://github.com/CodeBy-Abhishek', Icon: Github }, { href: 'https://www.linkedin.com/in/abhishek-yadav72/', Icon: Linkedin }, { href: 'mailto:abhishek977266@gmail.com', Icon: Mail }].map((link) => (
-        <motion.a key={link.href} variants={fadeUp} href={link.href}
-          target={link.href.startsWith('mailto') ? undefined : '_blank'} rel="noopener noreferrer"
-          whileHover={{ scale: 1.12, y: -4 }} whileTap={{ scale: 0.95 }}
-          className="p-4 bg-white/[0.03] border border-white/[0.06] rounded-full hover:bg-cyan-500 hover:text-black hover:border-cyan-500 hover:shadow-[0_0_24px_rgba(0,229,255,0.4)] transition-all duration-200">
-          <link.Icon size={18} />
-        </motion.a>
-      ))}
-    </motion.div>
-    <div className="flex flex-col items-center gap-3 opacity-15 hover:opacity-50 transition-opacity">
-      <div className="text-[9px] font-mono tracking-[0.4em] uppercase text-zinc-600">Built with the modern AI stack</div>
-      <div className="flex flex-wrap justify-center gap-5">
-        {['Next.js 15', 'TypeScript', 'TailwindCSS', 'Framer Motion', 'Three.js', 'Anthropic API'].map((t) => (
-          <span key={t} className="text-[10px] font-mono text-zinc-700">{t}</span>
-        ))}
-      </div>
-    </div>
-    <div className="text-[10px] text-zinc-800 font-mono tracking-[0.2em] uppercase mt-8">
-      Abhishek Yadav · AI Engineer · Kanpur, India · {new Date().getFullYear()}
-    </div>
-  </div>
-</footer>
+        </footer>
 
         <ProjectDetails project={selectedProject} onClose={() => setSelectedProject(null)} />
       </main>

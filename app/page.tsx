@@ -11,19 +11,7 @@ import ThemeToggle from '@/components/ThemeToggle';
 import { useState, useEffect } from 'react';
 import { Github, Linkedin, Mail, ArrowUpRight, Terminal, Server, Cpu, Database, Shield, Zap, Activity, Layers, TerminalSquare, MessageSquare, Info, X } from 'lucide-react';
 import { AnimatePresence, motion, useScroll, useSpring, useTransform } from 'framer-motion';
-=======
-import { useState, useEffect, useRef } from 'react';
-import {
-  Github, Linkedin, Mail, ArrowUpRight, Terminal, Server,
-  Database, Layers, Info, X, ExternalLink, Star, Brain, Workflow,
-  Zap, Shield, CheckCircle2, Award, ChevronRight, Cpu, FileText,
-  Search, MessageSquare, GitBranch, BarChart3, Network, Code2,
-} from 'lucide-react';
-import {
-  AnimatePresence, motion, useScroll, useSpring, useTransform,
-  useMotionValue, useInView,
-} from 'framer-motion';
->>>>>>> 7785240 (Update Portfolio)
+
 
 // ═══════════════════════════════════════════════════════
 // ANIMATION VARIANTS
@@ -1740,76 +1728,44 @@ export default function Home() {
         </ScrollRevealSection>
 >>>>>>> 7785240 (Update Portfolio)
 
-        {/* ═══ FOOTER ═══ */}
-        <footer className="py-24 px-6 md:px-24 bg-zinc-950 border-t border-white/[0.04] relative overflow-hidden">
-          <div className="absolute inset-0 opacity-10" style={{ backgroundImage: `linear-gradient(rgba(34,211,238,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.06) 1px, transparent 1px)`, backgroundSize: '60px 60px' }} />
-          <div className="relative z-10 flex flex-col items-center text-center">
-<<<<<<< HEAD
-            <TiltCard className="inline-block mb-12">
-              <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-white">READY TO <span className="text-cyan-500">SCALE?</span></h2>
-            </TiltCard>
-
-            <p className="text-zinc-500 font-mono text-sm mb-12 uppercase tracking-widest max-w-2xl">currently reviewing opportunities for L5+ roles at Big Tech / Infrastructure Scale-ups.</p>
-
-            <div className="flex justify-center gap-8 mb-20">
-              <a href="https://github.com/CodeBy-Abhishek" className="p-4 bg-white/5 border border-white/10 rounded-full hover:bg-cyan-500 hover:text-black transition-all group">
-                <Github size={24} />
-              </a>
-              <a href="https://www.linkedin.com/in/abhishek-yadav72/" className="p-4 bg-white/5 border border-white/10 rounded-full hover:bg-cyan-500 hover:text-black transition-all group">
-                <Linkedin size={24} />
-              </a>
-              <a href="mailto:abhishek977266@gmail.com" className="p-4 bg-white/5 border border-white/10 rounded-full hover:bg-cyan-500 hover:text-black transition-all group">
-                <Mail size={24} />
-              </a>
-            </div>
-
-            <div className="flex flex-col items-center gap-6 pb-12 opacity-30 group hover:opacity-100 transition-opacity">
-              <div className="text-[9px] font-mono tracking-[0.4em] uppercase">Built with the modern stack</div>
-              <div className="flex gap-8 items-center grayscale hover:grayscale-0 transition-all">
-                {["Next.js 15", "TypeScript", "TailwindCSS", "Framer Motion", "Spline", "Three.js"].map(tech => (
-                  <span key={tech} className="text-[10px] font-mono">{tech}</span>
-                ))}
-              </div>
-            </div>
-
-            <div className="text-[10px] text-zinc-700 font-mono tracking-[0.2em] uppercase">
-              Developer // Abhishek Yadav  // {new Date().getFullYear()}
-=======
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }}>
-              <TiltCard className="inline-block mb-8 cursor-default">
-                <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-white leading-none">
-                  BUILD WITH <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400">AI.</span>
-                </h2>
-              </TiltCard>
-            </motion.div>
-            <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} viewport={{ once: true }}
-              className="text-zinc-700 font-mono text-xs mb-10 uppercase tracking-[0.25em] max-w-2xl leading-loose">
-              AI Engineer · LLM Engineer · GenAI Developer<br />Remote / Bengaluru / Hyderabad / Noida
-            </motion.p>
-            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger(0.08)} className="flex justify-center gap-4 mb-14">
-              {[{ href: 'https://github.com/CodeBy-Abhishek', Icon: Github }, { href: 'https://www.linkedin.com/in/abhishek-yadav72/', Icon: Linkedin }, { href: 'mailto:abhishek977266@gmail.com', Icon: Mail }].map((link) => (
-                <motion.a key={link.href} variants={fadeUp} href={link.href}
-                  target={link.href.startsWith('mailto') ? undefined : '_blank'} rel="noopener noreferrer"
-                  whileHover={{ scale: 1.12, y: -4 }} whileTap={{ scale: 0.95 }}
-                  className="p-4 bg-white/[0.03] border border-white/[0.06] rounded-full hover:bg-cyan-500 hover:text-black hover:border-cyan-500 hover:shadow-[0_0_24px_rgba(0,229,255,0.4)] transition-all duration-200">
-                  <link.Icon size={18} />
-                </motion.a>
-              ))}
-            </motion.div>
-            <div className="flex flex-col items-center gap-3 opacity-15 hover:opacity-50 transition-opacity">
-              <div className="text-[9px] font-mono tracking-[0.4em] uppercase text-zinc-600">Built with the modern AI stack</div>
-              <div className="flex flex-wrap justify-center gap-5">
-                {['Next.js 15', 'TypeScript', 'TailwindCSS', 'Framer Motion', 'Three.js', 'Anthropic API'].map((t) => (
-                  <span key={t} className="text-[10px] font-mono text-zinc-700">{t}</span>
-                ))}
-              </div>
-            </div>
-            <div className="text-[10px] text-zinc-800 font-mono tracking-[0.2em] uppercase mt-8">
-              Abhishek Yadav · AI Engineer · Kanpur, India · {new Date().getFullYear()}
->>>>>>> 7785240 (Update Portfolio)
-            </div>
-          </div>
-        </footer>
+{/* ═══ FOOTER ═══ */}
+<footer className="py-24 px-6 md:px-24 bg-zinc-950 border-t border-white/[0.04] relative overflow-hidden">
+  <div className="absolute inset-0 opacity-10" style={{ backgroundImage: `linear-gradient(rgba(34,211,238,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.06) 1px, transparent 1px)`, backgroundSize: '60px 60px' }} />
+  <div className="relative z-10 flex flex-col items-center text-center">
+    <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }}>
+      <TiltCard className="inline-block mb-8 cursor-default">
+        <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-white leading-none">
+          BUILD WITH <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400">AI.</span>
+        </h2>
+      </TiltCard>
+    </motion.div>
+    <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} viewport={{ once: true }}
+      className="text-zinc-700 font-mono text-xs mb-10 uppercase tracking-[0.25em] max-w-2xl leading-loose">
+      AI Engineer · LLM Engineer · GenAI Developer<br />Remote / Bengaluru / Hyderabad / Noida
+    </motion.p>
+    <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger(0.08)} className="flex justify-center gap-4 mb-14">
+      {[{ href: 'https://github.com/CodeBy-Abhishek', Icon: Github }, { href: 'https://www.linkedin.com/in/abhishek-yadav72/', Icon: Linkedin }, { href: 'mailto:abhishek977266@gmail.com', Icon: Mail }].map((link) => (
+        <motion.a key={link.href} variants={fadeUp} href={link.href}
+          target={link.href.startsWith('mailto') ? undefined : '_blank'} rel="noopener noreferrer"
+          whileHover={{ scale: 1.12, y: -4 }} whileTap={{ scale: 0.95 }}
+          className="p-4 bg-white/[0.03] border border-white/[0.06] rounded-full hover:bg-cyan-500 hover:text-black hover:border-cyan-500 hover:shadow-[0_0_24px_rgba(0,229,255,0.4)] transition-all duration-200">
+          <link.Icon size={18} />
+        </motion.a>
+      ))}
+    </motion.div>
+    <div className="flex flex-col items-center gap-3 opacity-15 hover:opacity-50 transition-opacity">
+      <div className="text-[9px] font-mono tracking-[0.4em] uppercase text-zinc-600">Built with the modern AI stack</div>
+      <div className="flex flex-wrap justify-center gap-5">
+        {['Next.js 15', 'TypeScript', 'TailwindCSS', 'Framer Motion', 'Three.js', 'Anthropic API'].map((t) => (
+          <span key={t} className="text-[10px] font-mono text-zinc-700">{t}</span>
+        ))}
+      </div>
+    </div>
+    <div className="text-[10px] text-zinc-800 font-mono tracking-[0.2em] uppercase mt-8">
+      Abhishek Yadav · AI Engineer · Kanpur, India · {new Date().getFullYear()}
+    </div>
+  </div>
+</footer>
 
         <ProjectDetails project={selectedProject} onClose={() => setSelectedProject(null)} />
       </main>

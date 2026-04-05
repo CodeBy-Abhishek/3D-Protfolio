@@ -184,9 +184,10 @@ function StatCard({ val, unit, label }: { val: string; unit: string; label: stri
   );
 }
 
-function SectionTag({ children }: { children: React.ReactNode }) {
+function SectionTag({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
     <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
+      style={style}
       className="inline-flex items-center gap-2 px-3 py-1.5 mb-14 border border-cyan-500/20 rounded-md bg-cyan-500/[0.06] text-cyan-400 text-[10px] font-black tracking-[0.35em] uppercase">
       <span className="w-1 h-1 rounded-full bg-cyan-400 animate-pulse" />{children}
     </motion.div>
@@ -194,14 +195,14 @@ function SectionTag({ children }: { children: React.ReactNode }) {
 }
 
 // Parallax scroll-reveal section wrapper
-function ScrollRevealSection({ children, className, id }: { children: React.ReactNode; className?: string; id?: string }) {
+function ScrollRevealSection({ children, className, id, style = {} }: { children: React.ReactNode; className?: string; id?: string; style?: React.CSSProperties }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
   const y = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [60, 0, 0, -60]);
   const scale = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0.975, 1, 1, 0.975]);
   const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
   return (
-    <div id={id} className="w-full relative">
+    <div id={id} className="w-full relative" style={style}>
       <motion.section ref={ref} style={{ y, scale, opacity }} className={className}>{children}</motion.section>
     </div>
   );

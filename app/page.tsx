@@ -39,7 +39,7 @@ const PROJECTS = [
     title: 'AI Document Intelligence',
     category: 'Agentic AI · RAG Pipeline',
     accent: 'cyan' as const,
-    liveUrl: 'https://huggingface.co/spaces/abhishekyadav16/ai-doc-intelligence',
+    liveUrl: 'https://huggingface.co/spaces/abhishekyadav16/abhishekyadav16',
     githubUrl: 'https://github.com/CodeBy-Abhishek',
     live: true,
     problem: 'Enterprises drown in unstructured documents — PDFs and scanned files sit in silos, completely inaccessible to semantic search or intelligent querying.',
@@ -176,10 +176,10 @@ function StatCard({ val, unit, label }: { val: string; unit: string; label: stri
   }, []);
   return (
     <motion.div ref={ref} variants={fadeUp} className="group cursor-default">
-      <div className="text-4xl md:text-5xl font-black text-white mb-1 group-hover:text-cyan-400 transition-colors tracking-tighter leading-none">
-        {display}<span className="text-cyan-500 text-sm ml-1 font-bold">{unit}</span>
+      <div className="text-4xl md:text-5xl font-black mb-1 group-hover:text-cyan-400 transition-colors tracking-tighter leading-none" style={{ color: 'var(--text-primary)' }}>
+        {display}<span className="text-cyan-500 text-sm ml-1 font-bold" style={{ color: 'var(--accent-cyan)' }}>{unit}</span>
       </div>
-      <div className="text-[10px] text-zinc-600 font-mono uppercase tracking-[0.25em] mt-1.5">{label}</div>
+      <div className="text-[10px] font-mono uppercase tracking-[0.25em] mt-1.5" style={{ color: 'var(--text-muted)' }}>{label}</div>
     </motion.div>
   );
 }
@@ -223,7 +223,7 @@ function AIArchitectureDiagram() {
   ];
 
   return (
-    <div ref={ref} className="relative w-full rounded-2xl overflow-hidden border border-white/[0.06] bg-[#060810]" style={{ minHeight: 440 }}>
+    <div ref={ref} className="relative w-full rounded-2xl overflow-hidden border" style={{ minHeight: 440, backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}>
       {/* Perspective grid */}
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: `linear-gradient(rgba(34,211,238,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.055) 1px, transparent 1px)`,
@@ -232,16 +232,16 @@ function AIArchitectureDiagram() {
         transformOrigin: '50% 0%',
         opacity: 0.8,
       }} />
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 0%, transparent 30%, #060810 90%)' }} />
-      <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none" style={{ background: 'linear-gradient(to top, #060810, transparent)' }} />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 0%, transparent 30%, var(--card-bg) 90%)' }} />
+      <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none" style={{ background: 'linear-gradient(to top, var(--card-bg), transparent)' }} />
       {/* Mesh glows */}
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 20% 60%, rgba(34,211,238,0.07) 0%, transparent 50%), radial-gradient(ellipse at 80% 60%, rgba(167,139,250,0.07) 0%, transparent 50%)' }} />
 
       {/* Header */}
       <div className="relative z-20 pt-7 px-7 pb-4 flex items-center justify-between flex-wrap gap-3">
         <div>
-          <div className="text-[9px] font-mono text-cyan-500/50 tracking-[0.4em] uppercase mb-0.5">// SYSTEM ARCHITECTURE · LlamaIndex-Inspired</div>
-          <div className="text-white font-black text-lg tracking-tighter">RAG + Agentic AI Pipeline</div>
+          <div className="text-[9px] font-mono tracking-[0.4em] uppercase mb-0.5" style={{ color: 'var(--accent-cyan)' }}>// SYSTEM ARCHITECTURE · LlamaIndex-Inspired</div>
+          <div className="font-black text-lg tracking-tighter" style={{ color: 'var(--text-primary)' }}>RAG + Agentic AI Pipeline</div>
         </div>
         <div className="flex items-center gap-2 text-[10px] font-mono text-emerald-400 border border-emerald-500/20 px-3 py-1.5 rounded-full bg-emerald-500/[0.06]">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />MESSAGE BUS ACTIVE
@@ -250,7 +250,7 @@ function AIArchitectureDiagram() {
 
       {/* Node row */}
       <div className="relative z-20 px-5 md:px-10 pb-6 pt-2">
-        <div className="flex items-center justify-between gap-2 relative">
+        <div className="flex items-center justify-between gap-2 relative overflow-x-auto pb-2">
           {/* Connector lines with animated flow dots */}
           {[0, 1, 2, 3].map((i) => (
             <div key={i} className="flex-1 relative h-px mx-1" style={{ background: `linear-gradient(90deg, ${nodes[i].color}50, ${nodes[i + 1].color}50)` }}>
@@ -273,7 +273,7 @@ function AIArchitectureDiagram() {
                 <div className="text-center mb-3">
                   <span className="text-[9px] font-mono tracking-[0.2em] uppercase" style={{ color: node.color + '90' }}>{node.label}</span>
                 </div>
-                <div className="relative w-[100px] md:w-[120px] rounded-xl border p-4 flex flex-col items-center gap-3 transition-all duration-300 group-hover:scale-105 cursor-default"
+                <div className="relative w-[80px] sm:w-[100px] md:w-[120px] rounded-xl border p-3 sm:p-4 flex flex-col items-center gap-2 sm:gap-3 transition-all duration-300 group-hover:scale-105 cursor-default"
                   style={{ background: `radial-gradient(ellipse at 50% 0%, ${node.color}14 0%, rgba(10,12,20,0.95) 70%)`, borderColor: `${node.color}35`, boxShadow: `0 0 30px ${node.color}10, inset 0 0 20px ${node.color}05` }}>
                   <div className="absolute -inset-px rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: `linear-gradient(135deg, ${node.color}25, transparent 60%)` }} />
                   <div className="w-11 h-11 rounded-lg flex items-center justify-center" style={{ background: `${node.color}15`, border: `1px solid ${node.color}30` }}>
@@ -521,14 +521,14 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <main className="min-h-screen relative bg-[#050507] text-zinc-100 overflow-x-hidden selection:bg-cyan-900/50">
+      <main className="min-h-screen relative text-zinc-100 overflow-x-hidden selection:bg-cyan-900/50" style={{ background: 'var(--page-bg, #050507)', color: 'var(--page-text, #f4f4f5)', transition: 'background 0.4s ease, color 0.4s ease' }}>
         {/* Mesh gradient background */}
-        <div className="fixed inset-0 pointer-events-none mesh-gradient z-0 opacity-60" />
+        <div className="fixed inset-0 pointer-events-none mesh-gradient z-0 opacity-60 dark:opacity-60 transition-opacity duration-500" style={{ opacity: 'var(--mesh-opacity, 0.6)' }} />
 
         {/* ════════════════ NAV ════════════════ */}
         <nav className="fixed w-full top-0 z-[60] px-5 md:px-10 py-4 pointer-events-none">
           <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-[1400px] mx-auto flex justify-between items-center backdrop-blur-2xl border border-white/[0.06] rounded-2xl bg-zinc-950/70 px-5 py-3 pointer-events-auto shadow-[0_4px_60px_rgba(0,0,0,0.5)]">
+            className="max-w-[1400px] mx-auto flex justify-between items-center backdrop-blur-2xl border border-white/[0.06] dark:border-white/[0.06] rounded-2xl px-5 py-3 pointer-events-auto shadow-[0_4px_60px_rgba(0,0,0,0.5)]" style={{ background: 'var(--nav-bg, rgba(9,9,11,0.7))' }}>
             <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               className="font-mono text-base font-black tracking-tighter cursor-pointer group">
               <span className="text-white group-hover:text-cyan-400 transition-colors">ABHISHEK</span>
@@ -558,7 +558,7 @@ export default function Home() {
         </nav>
 
         {/* ════════════════ HERO ════════════════ */}
-        <section className="relative h-screen grid lg:grid-cols-[52%_48%] items-center px-6 md:px-12 lg:px-24 overflow-hidden section-scanline">
+        <section className="relative min-h-screen grid lg:grid-cols-[52%_48%] items-center px-4 sm:px-6 md:px-12 lg:px-24 overflow-hidden section-scanline pt-24 lg:pt-0">
           <div className="absolute inset-0 pointer-events-none" style={{
             backgroundImage: `linear-gradient(rgba(34,211,238,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.04) 1px, transparent 1px)`,
             backgroundSize: '60px 60px',
@@ -579,7 +579,7 @@ export default function Home() {
             <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col leading-[0.88] font-black tracking-tighter">
               <span className="text-5xl md:text-6xl text-zinc-600 font-light">Hi, I'm</span>
-              <span className="glitch-wrap text-[5rem] md:text-[7rem] text-white leading-[0.85]" data-text="Abhishek">Abhishek</span>
+              <span className="glitch-wrap text-[3.5rem] sm:text-[5rem] md:text-[7rem] text-white leading-[0.85]" data-text="Abhishek">Abhishek</span>
             </motion.div>
 
             {/* Typewriter role */}
@@ -618,7 +618,7 @@ export default function Home() {
                 className="btn-primary px-7 py-4 rounded-2xl flex items-center gap-2 text-sm font-black tracking-widest text-[#050507] group shadow-[0_0_30px_rgba(0,229,255,0.2)] hover:shadow-[0_0_50px_rgba(0,229,255,0.4)]">
                 View Projects <ArrowUpRight size={17} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </motion.a>
-              <motion.a ref={mag2ref} href="https://huggingface.co/spaces/abhishekyadav16/ai-doc-intelligence"
+              <motion.a ref={mag2ref} href="https://huggingface.co/spaces/abhishekyadav16/abhishekyadav16"
                 target="_blank" rel="noopener noreferrer" style={{ x: mag2x, y: mag2y }}
                 onMouseMove={handleMag(mag2x, mag2y, mag2ref)} onMouseLeave={resetMag(mag2x, mag2y)}
                 className="btn-secondary px-7 py-4 rounded-2xl flex items-center gap-2 text-sm font-black tracking-widest group">
@@ -628,15 +628,15 @@ export default function Home() {
 
             {/* Count-up stats */}
             <motion.div initial="hidden" animate="show" variants={stagger(0.1)} transition={{ delayChildren: 1.0 }}
-              className="flex gap-10 mt-10 pt-8 border-t border-white/[0.05]">
+              className="flex flex-wrap gap-6 sm:gap-10 mt-10 pt-8 border-t border-white/[0.05]">
               {[{ val: '6', unit: '×', label: 'Internships' }, { val: '11', unit: '✓', label: 'Anthropic Certs' }, { val: '2+', unit: '⬆', label: 'Live AI Projects' }].map((s) => (
                 <StatCard key={s.label} {...s} />
               ))}
             </motion.div>
           </div>
 
-          {/* 3D Hero right — mouse-parallax */}
-          <div className="hidden lg:flex h-full items-center justify-center p-10 relative z-20 pointer-events-none" style={{ perspective: '1200px' }}>
+          {/* 3D Hero right — mouse-parallax + interactive */}
+          <div className="hidden lg:flex h-full items-center justify-center p-10 relative z-20" style={{ perspective: '1200px' }}>
             <motion.div style={{ rotateX: mySpring, rotateY: mxSpring, transformStyle: 'preserve-3d' }} className="w-full h-full flex items-center justify-center float">
               <div className="w-full h-[90vh]" style={{ transform: 'translateZ(50px)' }}><Hero3D /></div>
             </motion.div>
@@ -657,7 +657,7 @@ export default function Home() {
 
         {/* ════════════════ ABOUT ════════════════ */}
         <div className="section-divider" />
-        <ScrollRevealSection id="about" className="py-32 px-6 md:px-24 relative overflow-hidden section-scanline">
+        <ScrollRevealSection id="about" className="py-20 sm:py-32 px-4 sm:px-6 md:px-24 relative overflow-hidden section-scanline">
           <div className="absolute right-0 top-0 w-96 h-96 rounded-full blur-[110px] bg-violet-500/[0.04] pointer-events-none" />
           <div className="relative z-10">
             <SectionTag>// 01 — About Me</SectionTag>
@@ -698,7 +698,7 @@ export default function Home() {
 
         {/* ════════════════ PROJECTS ════════════════ */}
         <div className="section-divider" />
-        <ScrollRevealSection id="projects" className="py-32 px-6 md:px-24 relative section-scanline">
+        <ScrollRevealSection id="projects" className="py-20 sm:py-32 px-4 sm:px-6 md:px-24 relative section-scanline">
           <span className="absolute -left-4 top-20 text-[8rem] md:text-[12rem] font-black text-white/[0.025] select-none pointer-events-none leading-none uppercase tracking-tighter">PROJECTS</span>
           <div className="relative z-10">
             <SectionTag>// 02 — Production AI Systems</SectionTag>
@@ -806,7 +806,7 @@ export default function Home() {
 
         {/* ════════════════ AI ARCHITECTURE ════════════════ */}
         <div className="section-divider" />
-        <ScrollRevealSection id="architecture" className="py-32 px-6 md:px-24 relative section-scanline">
+        <ScrollRevealSection id="architecture" className="py-20 sm:py-32 px-4 sm:px-6 md:px-24 relative section-scanline">
           <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 50%, rgba(34,211,238,0.025) 0%, transparent 70%)' }} />
           <div className="relative z-10">
             <SectionTag>// 03 — AI System Architecture</SectionTag>
@@ -815,7 +815,7 @@ export default function Home() {
               <div>
                 <motion.h2 initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                   transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-4xl md:text-5xl font-black tracking-tighter text-white leading-tight mb-4">
+                  className="text-4xl md:text-5xl font-black tracking-tighter leading-tight mb-4" style={{ color: 'var(--text-primary)' }}>
                   Production-Grade<br /><span className="cyber-gradient-text">AI Pipeline Design.</span>
                 </motion.h2>
                 <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.15 }}
@@ -831,11 +831,11 @@ export default function Home() {
                   { label: 'LangChain-Inspired', sub: 'Agent orchestration · tool-use · multi-step reasoning chains', color: '#22d3ee' },
                   { label: 'Anthropic MCP', sub: 'Model Context Protocol · structured tool calls · Claude API', color: '#34d399' },
                 ].map((badge) => (
-                  <div key={badge.label} className="flex items-center gap-3 px-4 py-3 rounded-xl llamaindex-card" style={{ borderColor: `${badge.color}20` }}>
+                  <div key={badge.label} className="flex items-center gap-3 px-4 py-3 rounded-xl llamaindex-card" style={{ backgroundColor: 'var(--card-bg)', borderColor: `${badge.color}20` }}>
                     <div className="w-1.5 h-10 rounded-full flex-shrink-0" style={{ background: `linear-gradient(to bottom, ${badge.color}, ${badge.color}40)` }} />
                     <div>
-                      <div className="text-white text-sm font-bold">{badge.label}</div>
-                      <div className="text-[11px] font-mono" style={{ color: badge.color + '70' }}>{badge.sub}</div>
+                      <div className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>{badge.label}</div>
+                      <div className="text-[11px] font-mono" style={{ color: badge.color + 'aa' }}>{badge.sub}</div>
                     </div>
                   </div>
                 ))}
@@ -862,27 +862,27 @@ export default function Home() {
 
         {/* ════════════════ SKILLS ════════════════ */}
         <div className="section-divider" />
-        <ScrollRevealSection id="skills" className="py-32 px-6 md:px-24 relative section-scanline">
+        <ScrollRevealSection id="skills" className="py-20 sm:py-32 px-4 sm:px-6 md:px-24 relative section-scanline">
           <div className="relative z-10">
             <SectionTag>// 04 — Technical Arsenal</SectionTag>
 
             {/* AI Stack primary card */}
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }} className="mb-8">
-              <div className="relative rounded-2xl overflow-hidden border border-cyan-500/20 bg-gradient-to-br from-cyan-950/20 via-zinc-900/30 to-zinc-900/20 llamaindex-card">
+              <div className="relative rounded-2xl overflow-hidden border llamaindex-card" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}>
                 <div className="absolute inset-0 opacity-20" style={{
-                  backgroundImage: `linear-gradient(rgba(34,211,238,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.06) 1px, transparent 1px)`,
+                  backgroundImage: `linear-gradient(var(--card-border) 1px, transparent 1px), linear-gradient(90deg, var(--card-border) 1px, transparent 1px)`,
                   backgroundSize: '40px 40px',
                 }} />
                 <div className="relative z-10 p-8 space-y-6">
                   <div className="flex items-center justify-between flex-wrap gap-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-11 h-11 rounded-xl bg-cyan-500/15 flex items-center justify-center border border-cyan-500/25 node-pulse">
-                        <Brain className="text-cyan-400" size={22} />
+                      <div className="w-11 h-11 rounded-xl flex items-center justify-center border node-pulse" style={{ backgroundColor: 'var(--accent-cyan)26', borderColor: 'var(--accent-cyan)40' }}>
+                        <Brain className="text-cyan-400" size={22} style={{ color: 'var(--accent-cyan)' }} />
                       </div>
                       <div>
-                        <h3 className="text-white font-black text-xl uppercase tracking-tight">AI / LLM Stack</h3>
-                        <p className="text-[10px] text-cyan-500/70 font-mono">Core Strength · Actively Deploying in Production</p>
+                        <h3 className="font-black text-xl uppercase tracking-tight" style={{ color: 'var(--text-primary)' }}>AI / LLM Stack</h3>
+                        <p className="text-[10px] font-mono" style={{ color: 'var(--accent-cyan)' }}>Core Strength · Actively Deploying in Production</p>
                       </div>
                     </div>
                     <span className="flex items-center gap-1.5 text-[10px] font-mono font-black text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full bg-emerald-500/[0.05]">
@@ -894,7 +894,8 @@ export default function Home() {
                       <motion.span key={s}
                         variants={{ hidden: { opacity: 0, scale: 0.8 }, show: { opacity: 1, scale: 1, transition: { duration: 0.35 } } }}
                         whileHover={{ scale: 1.07, y: -2 }}
-                        className="px-4 py-2 bg-zinc-900/80 border border-cyan-500/15 text-cyan-400/90 font-mono text-xs hover:border-cyan-500/45 hover:text-cyan-300 hover:bg-cyan-500/[0.04] transition-all cursor-default rounded">
+                        className="px-4 py-2 border font-mono text-xs hover:border-cyan-500/45 hover:text-cyan-300 transition-all cursor-default rounded"
+                        style={{ backgroundColor: 'var(--input-bg)', borderColor: 'var(--card-border)', color: 'var(--accent-cyan)' }}>
                         {s}
                       </motion.span>
                     ))}
@@ -910,16 +911,16 @@ export default function Home() {
                 return (
                   <motion.div key={group.title} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }}>
-                    <TiltCard className="h-full group bg-zinc-900/40 border border-white/[0.05] rounded-2xl p-7 space-y-6 llamaindex-card">
+                    <TiltCard className="h-full group rounded-2xl p-7 space-y-6 llamaindex-card" style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}>
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-white/[0.04] flex items-center justify-center border border-white/[0.06] group-hover:bg-cyan-500/10 group-hover:border-cyan-500/20 transition-all">
+                        <div className="w-9 h-9 rounded-lg flex items-center justify-center border transition-all" style={{ backgroundColor: 'var(--input-bg)', borderColor: 'var(--card-border)' }}>
                           <Icon className="text-zinc-500 group-hover:text-cyan-400 transition-colors" size={17} />
                         </div>
                         <h3 className="text-zinc-300 group-hover:text-white font-black text-sm uppercase tracking-tight transition-colors">{group.title}</h3>
                       </div>
                       <div className="flex flex-wrap gap-2">
                         {group.skills.map((s) => (
-                          <span key={s} className="px-3 py-1.5 bg-white/[0.03] border border-white/[0.05] text-zinc-600 font-mono text-xs hover:border-cyan-500/25 hover:text-cyan-400 transition-all cursor-default rounded">{s}</span>
+                          <span key={s} className="px-3 py-1.5 border font-mono text-xs transition-all cursor-default rounded" style={{ backgroundColor: 'var(--input-bg)', borderColor: 'var(--card-border)', color: 'var(--text-secondary)' }}>{s}</span>
                         ))}
                       </div>
                     </TiltCard>
@@ -932,7 +933,7 @@ export default function Home() {
 
         {/* ════════════════ EXPERIENCE + CERTS ════════════════ */}
         <div className="section-divider" />
-        <ScrollRevealSection id="experience" className="py-32 px-6 md:px-24 relative section-scanline">
+        <ScrollRevealSection id="experience" className="py-20 sm:py-32 px-4 sm:px-6 md:px-24 relative section-scanline">
           <div className="absolute left-0 top-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
           <div className="relative z-10">
             <SectionTag>// 05 — Experience & Certifications</SectionTag>
@@ -942,7 +943,7 @@ export default function Home() {
               <div>
                 <motion.h2 initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                   transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-4xl md:text-5xl font-black tracking-tighter text-white mb-3 leading-tight">
+                  className="text-4xl md:text-5xl font-black tracking-tighter mb-3 leading-tight" style={{ color: 'var(--text-primary)' }}>
                   6 Internships.<br /><span className="cyber-gradient-text">Real World Impact.</span>
                 </motion.h2>
                 <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.15 }} viewport={{ once: true }}
@@ -954,14 +955,14 @@ export default function Home() {
                   <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger(0.09)} className="space-y-4 pl-10">
                     {INTERNSHIPS.map((exp, i) => (
                       <motion.div key={i} variants={{ hidden: { opacity: 0, x: -24 }, show: { opacity: 1, x: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } } }} className="relative group">
-                        <div className={`absolute -left-7 top-3.5 w-2.5 h-2.5 rounded-full ${exp.color} opacity-60 group-hover:opacity-100 group-hover:scale-125 transition-all duration-300 border-2 border-[#050507]`} />
-                        <div className="bg-zinc-900/50 border border-white/[0.05] rounded-xl px-5 py-4 hover:border-white/10 hover:bg-zinc-900/80 hover:translate-x-1 transition-all duration-300 llamaindex-card">
+                        <div className={`absolute -left-7 top-3.5 w-2.5 h-2.5 rounded-full ${exp.color} opacity-60 group-hover:opacity-100 group-hover:scale-125 transition-all duration-300 border-2`} style={{ borderColor: 'var(--page-bg)' }} />
+                        <div className="border rounded-xl px-5 py-4 hover:translate-x-1 transition-all duration-300 llamaindex-card" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}>
                           <div className="flex justify-between items-start mb-1.5">
                             <div>
-                              <h4 className="text-white font-bold text-sm group-hover:text-cyan-400 transition-colors">{exp.company}</h4>
-                              <p className="text-zinc-600 text-[11px] font-mono mt-0.5">{exp.role}</p>
+                              <h4 className="font-bold text-sm group-hover:text-cyan-400 transition-colors" style={{ color: 'var(--text-primary)' }}>{exp.company}</h4>
+                              <p className="text-zinc-600 text-[11px] font-mono mt-0.5" style={{ color: 'var(--text-muted)' }}>{exp.role}</p>
                             </div>
-                            <span className="text-[10px] font-mono text-zinc-700 bg-white/[0.04] px-2 py-0.5 rounded whitespace-nowrap ml-2 border border-white/[0.05]">{exp.period}</span>
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded whitespace-nowrap ml-2 border" style={{ backgroundColor: 'var(--input-bg)', borderColor: 'var(--card-border)', color: 'var(--text-muted)' }}>{exp.period}</span>
                           </div>
                           <p className="text-cyan-500/60 text-[11px] font-mono flex items-center gap-1.5 group-hover:text-cyan-400/80 transition-colors">
                             <Zap size={9} />{exp.highlight}
@@ -986,11 +987,12 @@ export default function Home() {
                   {CERTIFICATIONS.map((cert) => (
                     <motion.div key={cert.name}
                       variants={{ hidden: { opacity: 0, x: 24 }, show: { opacity: 1, x: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } } }}
-                      className="flex justify-between items-center px-4 py-3 bg-zinc-900/40 border border-l-2 border-white/[0.05] border-l-cyan-500/30 hover:border-l-cyan-500 hover:bg-zinc-900/70 transition-all group cursor-default rounded-r-lg">
+                      className="flex justify-between items-center px-4 py-3 border border-l-2 transition-all group cursor-default rounded-r-lg"
+                      style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)', borderLeftColor: 'var(--accent-cyan)4d' }}>
                       <div className="flex items-center gap-3">
-                        <Award size={11} className="text-cyan-500/40 group-hover:text-cyan-400 transition-colors flex-shrink-0" />
+                        <Award size={11} className="transition-colors flex-shrink-0" style={{ color: 'var(--accent-cyan)' }} />
                         <div>
-                          <div className="text-zinc-300 text-sm font-medium group-hover:text-white transition-colors">{cert.name}</div>
+                          <div className="text-sm font-medium group-hover:text-white transition-colors" style={{ color: 'var(--text-secondary)' }}>{cert.name}</div>
                           <div className="text-[10px] text-zinc-700 font-mono">Anthropic Academy · 2024</div>
                         </div>
                       </div>
@@ -1020,7 +1022,7 @@ export default function Home() {
 
         {/* ════════════════ CONTACT ════════════════ */}
         <div className="section-divider" />
-        <ScrollRevealSection id="contact" className="py-32 px-6 md:px-24 bg-zinc-950 relative border-t border-white/[0.04] overflow-hidden section-scanline">
+        <ScrollRevealSection id="contact" className="py-20 sm:py-32 px-4 sm:px-6 md:px-24 bg-zinc-950 relative border-t border-white/[0.04] overflow-hidden section-scanline">
           <div className="absolute inset-0 opacity-25" style={{
             backgroundImage: `linear-gradient(rgba(34,211,238,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.04) 1px, transparent 1px)`,
             backgroundSize: '60px 60px',
@@ -1030,7 +1032,7 @@ export default function Home() {
             <div className="space-y-8">
               <SectionTag>// 06 — Let's Build Together</SectionTag>
               <motion.h3 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }}
-                className="text-5xl md:text-6xl font-black tracking-tighter text-white leading-tight">
+                className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter text-white leading-tight">
                 OPEN TO <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400">AI ROLES.</span>
               </motion.h3>
               <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.15 }} viewport={{ once: true }}
@@ -1062,7 +1064,7 @@ export default function Home() {
         </ScrollRevealSection>
 
         {/* ════════════════ FOOTER ════════════════ */}
-        <footer className="py-24 px-6 md:px-24 bg-zinc-950 border-t border-white/[0.04] relative overflow-hidden">
+        <footer className="py-16 sm:py-24 px-4 sm:px-6 md:px-24 bg-zinc-950 border-t border-white/[0.04] relative overflow-hidden">
           <div className="absolute inset-0 opacity-10" style={{
             backgroundImage: `linear-gradient(rgba(34,211,238,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.06) 1px, transparent 1px)`,
             backgroundSize: '60px 60px',
@@ -1070,7 +1072,7 @@ export default function Home() {
           <div className="relative z-10 flex flex-col items-center text-center">
             <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }}>
               <TiltCard className="inline-block mb-8 cursor-default">
-                <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-white leading-none">
+                <h2 className="text-3xl sm:text-5xl md:text-8xl font-black tracking-tighter text-white leading-none">
                   BUILD WITH <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400">AI.</span>
                 </h2>
               </TiltCard>

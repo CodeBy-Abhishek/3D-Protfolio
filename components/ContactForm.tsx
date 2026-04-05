@@ -30,12 +30,12 @@ export default function ContactForm() {
     };
 
     return (
-        <div className="glass-panel p-8 md:p-12 rounded-3xl border border-white/5 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+        <div className="glass-panel p-8 md:p-12 rounded-3xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none" style={{ color: 'var(--accent-cyan)' }}>
                 <Send size={120} />
             </div>
 
-            <h3 className="text-3xl font-bold mb-8 tracking-tighter">Get in Touch</h3>
+            <h3 className="text-3xl font-bold mb-8 tracking-tighter" style={{ color: 'var(--text-primary)' }}>Get in Touch</h3>
 
             <AnimatePresence mode="wait">
                 {status === 'success' ? (
@@ -66,25 +66,27 @@ export default function ContactForm() {
                         className="space-y-6"
                     >
                         <div className="space-y-2">
-                            <label className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Email Address</label>
+                            <label className="text-[10px] font-mono uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Email Address</label>
                             <input
                                 required
                                 type="email"
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500/50 transition-colors"
+                                className="w-full rounded-lg px-4 py-3 text-sm focus:outline-none transition-colors"
+                                style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--card-border)', color: 'var(--text-primary)' }}
                                 placeholder="engineer@provider.com"
                             />
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Message</label>
+                            <label className="text-[10px] font-mono uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Message</label>
                             <textarea
                                 required
                                 rows={4}
                                 value={formData.message}
                                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-cyan-500/50 transition-colors resize-none"
+                                className="w-full rounded-lg px-4 py-3 text-sm focus:outline-none transition-colors resize-none"
+                                style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--card-border)', color: 'var(--text-primary)' }}
                                 placeholder="Describe the mission parameters..."
                             />
                         </div>

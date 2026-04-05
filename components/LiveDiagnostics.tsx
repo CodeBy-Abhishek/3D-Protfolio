@@ -38,23 +38,23 @@ export default function LiveDiagnostics() {
                 </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white/5 p-3 rounded-lg border border-white/5 space-y-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="bg-white/5 p-3 rounded-lg border border-white/5 space-y-2" style={{ backgroundColor: 'var(--input-bg)', borderColor: 'var(--card-border)' }}>
                     <div className="flex items-center gap-2 text-zinc-500">
                         <Cpu size={12} />
                         <span className="text-[8px] font-mono uppercase">CPU_LOAD</span>
                     </div>
-                    <div className="text-xl font-bold font-mono text-white">
+                    <div className="text-xl font-bold font-mono" style={{ color: 'var(--text-primary)' }}>
                         {data?.metrics?.cpu_load ? (data.metrics.cpu_load * 100).toFixed(1) : '--'}%
                     </div>
                 </div>
 
-                <div className="bg-white/5 p-3 rounded-lg border border-white/5 space-y-2">
+                <div className="bg-white/5 p-3 rounded-lg border border-white/5 space-y-2" style={{ backgroundColor: 'var(--input-bg)', borderColor: 'var(--card-border)' }}>
                     <div className="flex items-center gap-2 text-zinc-500">
                         <Database size={12} />
                         <span className="text-[8px] font-mono uppercase">MEM_USAGE</span>
                     </div>
-                    <div className="text-xl font-bold font-mono text-white">
+                    <div className="text-xl font-bold font-mono" style={{ color: 'var(--text-primary)' }}>
                         {data?.metrics?.memory_usage_mb || '--'}MB
                     </div>
                 </div>

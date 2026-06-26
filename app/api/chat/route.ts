@@ -1,5 +1,14 @@
 import { NextResponse } from 'next/server';
 import Groq from 'groq-sdk';
+import type { ChatCompletionMessageParam } from 'groq-sdk/resources/chat';
+import { getClientIp, rateLimit } from '@/lib/rateLimit';
+
+type ChatRole = 'user' | 'assistant';
+
+type ClientMessage = {
+  role: ChatRole;
+  content: string;
+};
 
 const SYSTEM_PROMPT = `You are Abhishek.AI, the personal AI assistant for Abhishek Yadav. 
 Your goal is to represent Abhishek professionally to recruiters, engineers, and clients visiting his portfolio.
@@ -19,6 +28,16 @@ Here are the key facts about Abhishek Yadav:
 Tone: Professional, slightly enthusiastic, deeply technical when needed, and always encouraging visitors to hire Abhishek or view his projects. Limit responses to 2-3 short sentences unless explaining a complex project. Never hallucinate skills he doesn't have.`;
 
 export async function POST(req: Request) {
+  const ip = getClientIp(req);
+  const limit = rateLimit(`chat:${ip}`, 20, 60_000);
+
+  if (!limit.allowed) {
+    return NextResponse.json(
+      { reply: 'Too many chat requests. Please try again shortly.' },
+      { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } }
+    );
+  }
+
   try {
     if (!process.env.GROQ_API_KEY) {
       return NextResponse.json(
@@ -37,13 +56,27 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid messages array' }, { status: 400 });
     }
 
+    const validMessages: ClientMessage[] = messages
+      .filter((message): message is ClientMessage => (
+        typeof message === 'object' &&
+        message !== null &&
+        (message.role === 'user' || message.role === 'assistant') &&
+        typeof message.content === 'string' &&
+        message.content.trim().length > 0
+      ))
+      .slice(-12);
+
+    if (validMessages.length === 0) {
+      return NextResponse.json({ error: 'No valid chat messages provided' }, { status: 400 });
+    }
+
     // Prepend the system prompt
-    const apiMessages = [
+    const apiMessages: ChatCompletionMessageParam[] = [
       { role: 'system', content: SYSTEM_PROMPT },
-      ...messages.map((m: any) => ({
-        role: m.role,
-        content: m.content,
-      }))
+      ...validMessages.map((message) => ({
+        role: message.role,
+        content: message.content.trim(),
+      })),
     ];
 
     const chatCompletion = await groq.chat.completions.create({

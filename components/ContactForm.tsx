@@ -24,7 +24,7 @@ export default function ContactForm() {
             } else {
                 setStatus('error');
             }
-        } catch (err) {
+        } catch {
             setStatus('error');
         }
     };
@@ -48,7 +48,7 @@ export default function ContactForm() {
                     >
                         <CheckCircle2 className="text-cyan-500" size={64} />
                         <h4 className="text-xl font-bold">Message Sent</h4>
-                        <p className="text-zinc-500 font-mono text-sm max-w-xs">Thanks for reaching out. I'll get back to you shortly.</p>
+                        <p className="text-zinc-500 font-mono text-sm max-w-xs">Thanks for reaching out. I&apos;ll get back to you shortly.</p>
                         <button
                             onClick={() => setStatus('idle')}
                             className="text-cyan-500 font-mono text-[10px] uppercase tracking-widest pt-4"

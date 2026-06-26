@@ -7,6 +7,9 @@ import ProjectDetails from '@/components/ProjectDetails';
 import SystemBoot from '@/components/SystemBoot';
 import TiltCard from '@/components/TiltCard';
 import ThemeToggle from '@/components/ThemeToggle';
+import BlogSection from '@/components/BlogSection';
+import ProjectFilter from '@/components/ProjectFilter';
+import TestimonialsSection from '@/components/TestimonialsSection';
 import { useState, useEffect, useRef } from 'react';
 import {
   Github, Linkedin, Mail, ArrowUpRight, Terminal, Server,
@@ -241,7 +244,7 @@ function AIArchitectureDiagram() {
       {/* Header */}
       <div className="relative z-20 pt-7 px-7 pb-4 flex items-center justify-between flex-wrap gap-3">
         <div>
-          <div className="text-[9px] font-mono tracking-[0.4em] uppercase mb-0.5" style={{ color: 'var(--accent-cyan)' }}>// SYSTEM ARCHITECTURE · LlamaIndex-Inspired</div>
+          <div className="text-[9px] font-mono tracking-[0.4em] uppercase mb-0.5" style={{ color: 'var(--accent-cyan)' }}>SYSTEM ARCHITECTURE · LlamaIndex-Inspired</div>
           <div className="font-black text-lg tracking-tighter" style={{ color: 'var(--text-primary)' }}>RAG + Agentic AI Pipeline</div>
         </div>
         <div className="flex items-center gap-2 text-[10px] font-mono text-emerald-400 border border-emerald-500/20 px-3 py-1.5 rounded-full bg-emerald-500/[0.06]">
@@ -344,7 +347,7 @@ function AgentOrchestrationDiagram() {
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-7 flex-wrap gap-3">
           <div>
-            <div className="text-[9px] font-mono text-violet-400/50 tracking-[0.4em] uppercase mb-0.5">// MCP ORCHESTRATION · LangChain-Inspired</div>
+            <div className="text-[9px] font-mono text-violet-400/50 tracking-[0.4em] uppercase mb-0.5">MCP ORCHESTRATION · LangChain-Inspired</div>
             <div className="text-white font-black text-lg tracking-tighter">Multi-Agent Lead Pipeline</div>
           </div>
           <div className="flex items-center gap-2 text-[10px] font-mono text-violet-400 border border-violet-500/20 px-3 py-1 rounded-full bg-violet-500/[0.06]">
@@ -452,13 +455,16 @@ export default function Home() {
     return () => window.removeEventListener('mousemove', onMove);
   }, [mxSpring, mySpring]);
 
-  const handleMag = (mx: typeof mag1x, my: typeof mag1y, ref: React.RefObject<HTMLAnchorElement | null>) =>
-    (e: React.MouseEvent) => {
-      const el = ref.current; if (!el) return;
-      const r = el.getBoundingClientRect();
-      mx.set((e.clientX - r.left - r.width / 2) * 0.25);
-      my.set((e.clientY - r.top - r.height / 2) * 0.25);
-    };
+  const handleMag1Move = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    mag1x.set((e.clientX - r.left - r.width / 2) * 0.25);
+    mag1y.set((e.clientY - r.top - r.height / 2) * 0.25);
+  };
+  const handleMag2Move = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    mag2x.set((e.clientX - r.left - r.width / 2) * 0.25);
+    mag2y.set((e.clientY - r.top - r.height / 2) * 0.25);
+  };
   const resetMag = (mx: typeof mag1x, my: typeof mag1y) => () => { mx.set(0); my.set(0); };
 
   return (
@@ -579,7 +585,7 @@ export default function Home() {
             {/* Name with glitch */}
             <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col leading-[0.88] font-black tracking-tighter">
-              <span className="text-5xl md:text-6xl text-zinc-600 font-light">Hi, I'm</span>
+              <span className="text-5xl md:text-6xl text-zinc-600 font-light">Hi, I&apos;m</span>
               <span className="glitch-wrap text-[3.5rem] sm:text-[5rem] md:text-[7rem] text-white leading-[0.85]" data-text="Abhishek">Abhishek</span>
             </motion.div>
 
@@ -587,7 +593,7 @@ export default function Home() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="flex items-center gap-3 mt-4 flex-wrap">
               <span className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400 min-w-[200px]">{typeText}</span>
               <span className="blink w-0.5 h-6 bg-cyan-400 rounded-sm flex-shrink-0" />
-              <span className="text-zinc-700 text-xl hidden md:block">//</span>
+              <span className="text-zinc-700 text-xl hidden md:block">/</span>
               <span className="text-zinc-500 text-lg hidden md:block font-light">Full-Stack Dev</span>
             </motion.div>
 
@@ -615,13 +621,13 @@ export default function Home() {
             {/* Magnetic CTAs */}
             <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="flex flex-wrap gap-4 mt-10">
               <motion.a ref={mag1ref} href="#projects" style={{ x: mag1x, y: mag1y }}
-                onMouseMove={handleMag(mag1x, mag1y, mag1ref)} onMouseLeave={resetMag(mag1x, mag1y)}
+                onMouseMove={handleMag1Move} onMouseLeave={resetMag(mag1x, mag1y)}
                 className="btn-primary px-7 py-4 rounded-2xl flex items-center gap-2 text-sm font-black tracking-widest text-[#050507] group shadow-[0_0_30px_rgba(0,229,255,0.2)] hover:shadow-[0_0_50px_rgba(0,229,255,0.4)]">
                 View Projects <ArrowUpRight size={17} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </motion.a>
               <motion.a ref={mag2ref} href="https://huggingface.co/spaces/abhishekyadav16/abhishekyadav16"
                 target="_blank" rel="noopener noreferrer" style={{ x: mag2x, y: mag2y }}
-                onMouseMove={handleMag(mag2x, mag2y, mag2ref)} onMouseLeave={resetMag(mag2x, mag2y)}
+                onMouseMove={handleMag2Move} onMouseLeave={resetMag(mag2x, mag2y)}
                 className="btn-secondary px-7 py-4 rounded-2xl flex items-center gap-2 text-sm font-black tracking-widest group">
                 <ExternalLink size={14} className="group-hover:scale-110 transition-transform" /> Live Demo ↗
               </motion.a>
@@ -661,14 +667,14 @@ export default function Home() {
         <ScrollRevealSection id="about" className="py-20 sm:py-32 px-4 sm:px-6 md:px-24 relative overflow-hidden section-scanline">
           <div className="absolute right-0 top-0 w-96 h-96 rounded-full blur-[110px] bg-violet-500/[0.04] pointer-events-none" />
           <div className="relative z-10">
-            <SectionTag>// 01 — About Me</SectionTag>
+            <SectionTag>01 — About Me</SectionTag>
             <div className="grid md:grid-cols-12 gap-16 items-start">
               <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger(0.1)} className="md:col-span-5 space-y-7">
                 <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-black leading-tight tracking-tighter text-white">
                   Building AI that <br /><span className="cyber-gradient-text">actually ships.</span>
                 </motion.h2>
                 <motion.div variants={fadeUp} className="space-y-5 text-zinc-500 text-[15px] leading-relaxed">
-                  <p>I'm <strong className="text-white">Abhishek Yadav</strong> — BCA (2022–2025, CGPA 7.59) from CSJMU Kanpur, positioning as an <strong className="text-cyan-400">AI Engineer</strong>. I don't just study AI — I deploy it.</p>
+                  <p>I&apos;m <strong className="text-white">Abhishek Yadav</strong> — BCA (2022–2025, CGPA 7.59) from CSJMU Kanpur, positioning as an <strong className="text-cyan-400">AI Engineer</strong>. I don&apos;t just study AI — I deploy it.</p>
                   <p>My flagship: <strong className="text-zinc-200">3-stage RAG + Computer Vision + Agentic AI pipeline</strong> on HuggingFace, powered by Anthropic Claude API. Plus an MCP-powered Lead Gen System with LangGraph — architecturally rare among Indian fresher profiles.</p>
                   <p><strong className="text-zinc-200">6 internships. 11 Anthropic Academy certs.</strong> Targeting <span className="text-cyan-400 font-semibold">AI Engineer / LLM Engineer / GenAI Developer</span> — remote-first or Bengaluru / Hyderabad / Noida.</p>
                 </motion.div>
@@ -702,7 +708,7 @@ export default function Home() {
         <ScrollRevealSection id="projects" className="py-20 sm:py-32 px-4 sm:px-6 md:px-24 relative section-scanline">
           <span className="absolute -left-4 top-20 text-[8rem] md:text-[12rem] font-black text-white/[0.025] select-none pointer-events-none leading-none uppercase tracking-tighter">PROJECTS</span>
           <div className="relative z-10">
-            <SectionTag>// 02 — Production AI Systems</SectionTag>
+            <SectionTag>02 — Production AI Systems</SectionTag>
             <div className="flex flex-col gap-44">
               {PROJECTS.map((project, idx) => {
                 const isCyan = project.accent === 'cyan';
@@ -805,12 +811,16 @@ export default function Home() {
           </div>
         </ScrollRevealSection>
 
+        <ProjectFilter />
+        <BlogSection />
+        <TestimonialsSection />
+
         {/* ════════════════ AI ARCHITECTURE ════════════════ */}
         <div className="section-divider" />
         <ScrollRevealSection id="architecture" className="py-20 sm:py-32 px-4 sm:px-6 md:px-24 relative section-scanline">
           <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 50%, rgba(34,211,238,0.025) 0%, transparent 70%)' }} />
           <div className="relative z-10">
-            <SectionTag>// 03 — AI System Architecture</SectionTag>
+            <SectionTag>03 — AI System Architecture</SectionTag>
 
             <div className="grid md:grid-cols-2 gap-8 mb-10">
               <div>
@@ -865,7 +875,7 @@ export default function Home() {
         <div className="section-divider" />
         <ScrollRevealSection id="skills" className="py-20 sm:py-32 px-4 sm:px-6 md:px-24 relative section-scanline">
           <div className="relative z-10">
-            <SectionTag>// 04 — Technical Arsenal</SectionTag>
+            <SectionTag>04 — Technical Arsenal</SectionTag>
 
             {/* AI Stack primary card */}
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
@@ -937,7 +947,7 @@ export default function Home() {
         <ScrollRevealSection id="experience" className="py-20 sm:py-32 px-4 sm:px-6 md:px-24 relative section-scanline">
           <div className="absolute left-0 top-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
           <div className="relative z-10">
-            <SectionTag>// 05 — Experience & Certifications</SectionTag>
+            <SectionTag>05 — Experience & Certifications</SectionTag>
             <div className="grid md:grid-cols-2 gap-20">
 
               {/* Timeline */}
@@ -1031,7 +1041,7 @@ export default function Home() {
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full blur-[130px] bg-cyan-500/[0.04] pointer-events-none" />
           <div className="relative z-10 grid md:grid-cols-2 gap-20 items-center">
             <div className="space-y-8">
-              <SectionTag>// 06 — Let's Build Together</SectionTag>
+              <SectionTag>06 — Let&apos;s Build Together</SectionTag>
               <motion.h3 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }}
                 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter text-white leading-tight">
                 OPEN TO <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400">AI ROLES.</span>

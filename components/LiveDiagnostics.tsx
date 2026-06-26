@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Activity, ShieldCheck, Database, Cpu, RefreshCw } from 'lucide-react';
+import { ShieldCheck, Database, Cpu, RefreshCw } from 'lucide-react';
 import { getSystemHealth } from '@/app/actions/system';
 
 export default function LiveDiagnostics() {

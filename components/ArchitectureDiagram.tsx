@@ -1,7 +1,15 @@
 'use client';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { Server, Database, Cloud, Zap, Cpu, Network, Shield, Binary } from 'lucide-react';
-import { useState } from 'react';
+import { Database, Cloud, Zap, Cpu, Shield, Binary } from 'lucide-react';
+
+const PARTICLES = [
+    { x: [-240, 170], y: [-120, 80], z: [20, 160], duration: 6 },
+    { x: [210, -110], y: [140, -90], z: [80, 190], duration: 7.5 },
+    { x: [-80, 260], y: [60, -150], z: [40, 120], duration: 8 },
+    { x: [120, -250], y: [-170, 110], z: [110, 30], duration: 6.8 },
+    { x: [-290, 40], y: [100, -30], z: [30, 175], duration: 7.2 },
+    { x: [70, 230], y: [-60, 150], z: [150, 60], duration: 8.4 },
+];
 
 export default function ArchitectureDiagram() {
     const x = useMotionValue(0);
@@ -96,17 +104,17 @@ export default function ArchitectureDiagram() {
                 </div>
 
                 {/* Floating Bits */}
-                {[...Array(6)].map((_, i) => (
+                {PARTICLES.map((particle, i) => (
                     <motion.div
                         key={i}
                         className="absolute w-1 h-1 bg-cyan-500/40 rounded-full"
                         animate={{
-                            x: [Math.random() * 600 - 300, Math.random() * 600 - 300],
-                            y: [Math.random() * 400 - 200, Math.random() * 400 - 200],
-                            z: [Math.random() * 200, Math.random() * 200],
+                            x: particle.x,
+                            y: particle.y,
+                            z: particle.z,
                             opacity: [0, 0.5, 0],
                         }}
-                        transition={{ duration: 5 + Math.random() * 5, repeat: Infinity }}
+                        transition={{ duration: particle.duration, repeat: Infinity }}
                     />
                 ))}
             </motion.div>
